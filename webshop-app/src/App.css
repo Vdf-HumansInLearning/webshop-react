@@ -42,3 +42,12 @@
 .footer-item > a:hover{
   color: #f60000;
 }
+
+@media (max-width: 600px){
+  .footer{
+      flex-direction: column;
+  }
+  .footer-list{
+      padding-left: 0;
+  }
+}
