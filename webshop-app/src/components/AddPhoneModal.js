@@ -1,5 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import "../css/Modal.css";
 
 function AddPhoneModal(props) {
   return (

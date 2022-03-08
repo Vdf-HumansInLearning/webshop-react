@@ -1,6 +1,7 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import AddPhoneModal from "../components/AddPhoneModal";
+import EditPhoneModal from "../components/EditPhoneModal";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 
