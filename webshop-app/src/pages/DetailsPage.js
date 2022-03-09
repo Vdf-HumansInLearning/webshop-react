@@ -1,7 +1,7 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 
-function PhonePage() {
+function DetailsPage() {
     return (
         <>
             <NavbarComponent/>
@@ -11,4 +11,4 @@ function PhonePage() {
     );
 }
 
-export default PhonePage;
+export default DetailsPage;

@@ -2,8 +2,11 @@ import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import AddPhoneModal from "../components/AddPhoneModal";
 import EditPhoneModal from "../components/EditPhoneModal";
+import PhoneList from "../components/PhoneList";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
+
+import '../css/StorePage.css';
 
 function StorePage() {
   const [modalShow, setModalShow] = useState(false);
@@ -11,7 +14,7 @@ function StorePage() {
   return (
     <>
       <NavbarComponent />
-      <div>Store Page</div>
+      <PhoneList />
       <Button variant="primary" onClick={() => setModalShow(true)}>
         Add Phone
       </Button>
