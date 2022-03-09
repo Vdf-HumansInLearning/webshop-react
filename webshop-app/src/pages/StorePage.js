@@ -1,11 +1,14 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
+import PhoneList from "../components/PhoneList";
+
+import '../css/StorePage.css';
 
 function StorePage() {
     return (
         <>
             <NavbarComponent/>
-            <div>Store Page</div>
+            <PhoneList />
             <FooterComponent/>
         </>
     );

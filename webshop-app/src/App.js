@@ -11,7 +11,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import CartPage from './pages/CartPage';
 import UsersPage from './pages/UsersPage';
 import StorePage from './pages/StorePage';
-import PhonePage from './pages/PhonePage';
+import DetailsPage from './pages/DetailsPage';
 import ProfilePage from './pages/ProfilePage';
 import OrdersPage from './pages/OrdersPage';
 
@@ -28,7 +28,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />}/>
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/phones" element={<StorePage />} />
-        <Route path="/phones/:id" element={<PhonePage />} />
+        <Route path="/phones/:id" element={<DetailsPage />} />
         <Route path="*" element={<NotFoundPage />}/>
       </Routes>
     </BrowserRouter>
