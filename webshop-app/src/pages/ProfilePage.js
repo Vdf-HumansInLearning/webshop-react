@@ -4,42 +4,52 @@ import EditProfileModal from "../components/EditProfileModal";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 
-function ProfilePage(logged_in = true) {
+function ProfilePage() {
   const [modalShow, setModalShow] = useState(false);
+  const [user, setUser] = useState({});
+
+  let logged_in = false;
+  let user_id = localStorage.getItem("user_id");
+  if (user_id) {
+    logged_in = true;
+    fetch("http://localhost:3001/users/" + user_id)
+      .then((response) => response.json())
+      .then((data) => setUser(data));
+  }
+  console.log(typeof user.address);
   return (
     <>
       <NavbarComponent />
       <div
-        class="container d-flex flex-column align-items-center mt-5 pt-5"
+        className="container d-flex flex-column align-items-center mt-5 pt-5"
         id="container"
       >
         {logged_in === false ? (
           <>
-            {" "}
-            <h3 class="main-title">You are not logged in.</h3>
+            <h3 className="main-title">You are not logged in.</h3>
             <a href="/auth/login">Go to Login page</a>
           </>
         ) : (
           <>
-            <h3 class="main-title">
+            <h3 className="main-title">
               <u>Your Profile</u>
             </h3>
-            <dl class="profile mt-3">
+            <dl className="profile mt-3">
               <dt>
                 <strong>Name: </strong>
               </dt>
-              <dd>user name</dd>
+              <dd>{user.name}</dd>
               <dt>
                 <strong>Email: </strong>
               </dt>
-              <dd>user email</dd>
+              <dd>{user.email}</dd>
               {/* {user.address.street ? (
                 <>
                   <dt>
                     <strong>Address: </strong>
                   </dt>
                   <dd>
-                    {user.address.street + street}, {user.address.suite}
+                    {user.address.street + "street"}, {user.address.suite}
                     ,{user.address.zipcode}, {user.address.city}
                   </dd>
                 </>
