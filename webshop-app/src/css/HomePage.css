@@ -13,10 +13,10 @@
     margin: 0;
 }
 
-.footer {
+.footer-absolute {
     position: absolute;
 }
 
-.footer-item > a:hover{
+.footer-home .footer-item > a:hover{
     color: white;
 }
