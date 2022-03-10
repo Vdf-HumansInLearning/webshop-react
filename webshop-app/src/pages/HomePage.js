@@ -21,7 +21,7 @@ function HomePage() {
                     <Col xs={7}></Col>
                 </Row>
             </main>
-            <FooterComponent/>
+            <FooterComponent position="absolute" page="Home"/>
         </>
     );
 }
