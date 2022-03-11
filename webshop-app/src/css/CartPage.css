@@ -29,6 +29,10 @@
   align-items: center;
 }
 
+.item-container-product {
+  text-align: left;
+}
+
 .remove-div {
   display: flex;
   justify-content: flex-end;
