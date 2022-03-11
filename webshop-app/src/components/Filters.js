@@ -194,7 +194,7 @@ function Filters({
                 name="os"
                 value="Android"
                 onChange={handleChange}
-                defaultChecked={filters.os.length > 0 ? true : false}
+                defaultChecked={filters.os.indexOf("Android") !== -1 ? true : false}
               />
               <label>Android</label>
               <input
@@ -203,7 +203,7 @@ function Filters({
                 name="os"
                 value="iOS"
                 onChange={handleChange}
-                defaultChecked={filters.os.length > 0 ? true : false}
+                defaultChecked={filters.os.indexOf("iOS") !== -1 ? true : false}
               />
               <label>iOS</label>
             </fieldset>
