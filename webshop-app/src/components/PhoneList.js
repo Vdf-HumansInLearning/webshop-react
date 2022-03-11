@@ -1,67 +1,76 @@
-import {useState, useEffect} from 'react'
-import Phone from './Phone'
-import Filters from './Filters'
+import {useState, useEffect} from 'react';
+import axios from "axios";
+import Phone from './Phone';
+import Filters from './Filters';
 
 function PhoneList() {
     const [phones, setPhones] = useState([]);
-    const [searchInput, setSearchInput] = useState('');
-    const [sorting, setSorting] = useState('none');
+    const [filterValues, setFilterValues] = useState(null);
     const [filters, setFilters] = useState({
-        brands: [],
-        price: '',
+        brand: [],
+        price_range: '',
         os: [],
-        rating: '',
-        stock: null
+        minimum_rating: '',
+        stock_yes: null,
+        search: "",
+        sort: "none"
     });
 
-    const updatedPhones =  phones.filter(item => item.brand.toLowerCase().includes(searchInput) || item.name.toLowerCase().includes(searchInput));
-
-    const handleChangedInput = (e) => {
-        setSearchInput(e.target.value);
-    }
-
-    const handleChangeFilters = (e) => {
-
-    }
-
-    const handleChangeSort = (e) => {
-
-    }
-
-    useEffect(() => {
-        fetch('http://localhost:3001/phones')
-        .then(response => response.json())
-        .then(data => {
-            setPhones(data.products)
-            setFilters(data.filters)
-        })
-    }, [])
-
-    useEffect(() => {
-        if(sorting === 'none'){
-            return;
-        } else {
-           console.log('works')
-
+    const handleChange = (event) =>{
+        const name = event.target.name;
+        const isChecked = event.target.checked;
+        if(name === 'price_range') {
+            setFilters({...filters, [name] : event.target.value});
+        } else if (name === 'brand' || name === 'os') {
+            if(isChecked){
+                setFilters({ ...filters, [name]: [...filters[name], event.target.value] });
+            }else{
+                let index = filters[name].indexOf(event.target.value);
+                filters[name].splice(index, 1);
+                setFilters({ ...filters, [name]: filters[name] });
+            }
+        } else if (name === "stock_yes") {
+            if(isChecked){
+                setFilters({ ...filters, [name]:  event.target.value});
+            }else{
+                setFilters({ ...filters, stock_yes:  null});
+            }
         }
-    }, [sorting])
+        
+    }
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/phones', { params: filters})
+        .then(function (response) {
+            setPhones(response.data.products)
+            setFilterValues(response.data.filters)
+        })
+    }, [filters])
   
 
-    
+    const handleReset = () => {
+        setFilters({
+            ...filters,
+            brand: [],
+            price_range: '',
+            os: [],
+            minimum_rating: '',
+            stock_yes: null
+        })
+    }
 
   return (
     <>
-        <Filters 
-        handleChangedInput={handleChangedInput}
-        searchInput={searchInput}
+        <Filters
+        filterValues={filterValues}
         filters={filters}
         setFilters={setFilters}
-        handleChangeFilters={handleChangeFilters}
-        handleChangeSort={handleChangeSort}
+        handleChange={handleChange}
+        handleReset={handleReset}
         />
         <div className='container mt-3 mb-3'>
             <div className="row" id="phone-row">
-                {updatedPhones.map(item => <Phone 
+                {phones.map(item => <Phone 
                     key={item.id}
                     id={item.id}
                     date={item.availability_date}
