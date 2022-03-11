@@ -22,7 +22,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-brand"
+                htmlFor="add-brand"
                 id="basic-addon1"
               >
                 Brand*
@@ -44,7 +44,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-name"
+                htmlFor="add-name"
                 id="basic-addon1"
               >
                 Name*
@@ -64,7 +64,7 @@ function AddPhoneModal(props) {
               Invalid product name.
             </div>
             <div className="input-group mb-3">
-              <span className="input-group-text" for="add-os" id="basic-addon1">
+              <span className="input-group-text" htmlFor="add-os" id="basic-addon1">
                 OS*
               </span>
               <input
@@ -84,7 +84,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-price"
+                htmlFor="add-price"
                 id="basic-addon1"
               >
                 Price*
@@ -106,7 +106,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-discount"
+                htmlFor="add-discount"
                 id="basic-addon1"
               >
                 Discount
@@ -127,7 +127,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-quantity"
+                htmlFor="add-quantity"
                 id="basic-addon1"
               >
                 Quantity*
@@ -149,7 +149,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-date"
+                htmlFor="add-date"
                 id="basic-addon1"
               >
                 Availability date*
@@ -171,7 +171,7 @@ function AddPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="add-rating"
+                htmlFor="add-rating"
                 id="basic-addon1"
               >
                 Rating

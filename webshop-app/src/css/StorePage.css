@@ -89,9 +89,15 @@ body {
     padding-right: 10px;
 }
 
-legend {
-    font-size:20px;
-    font-weight: bold;
+.input-group-text {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.border-none {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-left: none !important;
 }
 
 label {
@@ -133,34 +139,6 @@ label {
 
 .hide {
     display: none !important;
-}
-
-.new-phone {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 10000;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    background-color: white;
-    width: auto;
-    height: auto;
-    border:1px solid red;
-}
-
-.edit-phone {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 10000;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    background-color: white;
-    width: auto;
-    height: auto;
-    border:1px solid red;
 }
 
 @media (max-width : 768px) {
