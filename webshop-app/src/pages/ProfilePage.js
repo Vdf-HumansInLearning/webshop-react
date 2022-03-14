@@ -14,17 +14,17 @@ function ProfilePage() {
   if (user_id) {
     logged_in = true;
   }
-  
+
   useEffect(() => {
     if (user_id && logged_in) {
       fetch("http://localhost:3001/users/" + user_id)
         .then((response) => response.json())
         .then((data) => {
-          setUser(data)});
+          setUser(data);
+        });
     }
-  }, [])
-  
-  
+  }, []);
+
   return (
     <>
       <NavbarComponent />
@@ -52,8 +52,8 @@ function ProfilePage() {
                     <strong>Address: </strong>
                   </dt>
                   <dd>
-                    {user.address.street + "street"}, {user.address.suite}
-                    ,{user.address.zipcode}, {user.address.city}
+                    {user.address.street + " street"}, {user.address.suite},
+                    {user.address.zipcode}, {user.address.city}
                   </dd>
                 </>
               ) : (
@@ -84,6 +84,15 @@ function ProfilePage() {
             <Button variant="outline-danger" onClick={() => setModalShow(true)}>
               Edit Profile
             </Button>
+            <EditProfileModal
+              street={user.address.street}
+              suite={user.address.suite}
+              city={user.address.city}
+              zipcode={user.address.zipcode}
+              phone={user.phone}
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
           </>
         ) : (
           <>
@@ -93,7 +102,6 @@ function ProfilePage() {
         )}
       </div>
       <FooterComponent />
-      <EditProfileModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
 }
