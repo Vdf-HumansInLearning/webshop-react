@@ -13,8 +13,8 @@
     margin: 0;
 }
 
-.footer {
-    position: absolute;
+.homepage-footer {
+    padding-top: 100px;
 }
 
 .footer-item > a:hover{
