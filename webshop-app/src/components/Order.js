@@ -60,7 +60,10 @@ export default function Order({
     <Accordion defaultActiveKey="1">
       <Card>
         <Card.Header>
-          <span className="order-title">Order {id}</span>
+          <p className="fw-bold">
+            Order
+            <span className="text-success"> {id}</span>
+          </p>
           <ContextAwareToggle eventKey="0"></ContextAwareToggle>
         </Card.Header>
         <Accordion.Collapse eventKey="0">
