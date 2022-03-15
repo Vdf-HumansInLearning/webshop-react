@@ -1,12 +1,12 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
-
+import UserList from "../components/UserList"
 function UsersPage() {
     return (
         <>
-            <NavbarComponent/>
-            <div>Users Page</div>
-            <FooterComponent/>
+            <NavbarComponent />
+            <UserList />
+            <FooterComponent />
         </>
     );
 }
