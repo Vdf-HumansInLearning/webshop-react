@@ -26,7 +26,7 @@ function OrdersPage() {
     <>
       <NavbarComponent />
       {loggedIn && orders.length > 0 ? (
-        <main className="main-main">
+        <main className="order-main">
           {orders.map((order) => (
             <Order
               key={order.id}
