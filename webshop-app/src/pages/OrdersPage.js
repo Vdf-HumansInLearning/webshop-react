@@ -8,8 +8,15 @@ import { useState, useEffect } from "react";
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
 
+  let loggedIn = false;
+  let idUser = localStorage.getItem("user_id");
+
+  if (idUser) {
+    loggedIn = true;
+  }
+
   useEffect(() => {
-    fetch("http://localhost:3001/orders")
+    fetch(`http://localhost:3001/orders/user/${idUser}`)
       .then((response) => response.json())
       .then((data) => setOrders(data));
   }, []);
@@ -18,21 +25,27 @@ function OrdersPage() {
   return (
     <>
       <NavbarComponent />
-      <main className="main-main">
-        {orders.map((order) => (
-          <Order
-            key={order.id}
-            id={order.id}
-            email={order.email}
-            name={order.name}
-            phone={order.name}
-            date={order.date}
-            price={order.order[0].price}
-            quantity={order.order[0].quantity}
-            deliveryAddress={order.delivery_address}
-          />
-        ))}
-      </main>
+      {loggedIn && orders.length > 0 ? (
+        <main className="main-main">
+          {orders.map((order) => (
+            <Order
+              key={order.id}
+              order={order}
+              id={order.id}
+              email={order.email}
+              name={order.name}
+              phone={order.name}
+              date={order.date}
+              total={order.total}
+              deliveryAddress={order.delivery_address}
+            />
+          ))}
+        </main>
+      ) : loggedIn && orders.length === 0 ? (
+        <p>orders empty </p>
+      ) : (
+        <p>you are not logged in</p>
+      )}
       <FooterComponent />
     </>
   );
