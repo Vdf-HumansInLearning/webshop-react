@@ -29,9 +29,9 @@ function CartPage() {
   const [cartItems, setCartItems] = useState(orders);
 
   const [totalCartValue, setTotalCartValue] = useState(0);
-  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   const [idToDelete, setIdToDelete] = useState(0);
+  const [modalShow, setModalShow] = useState(false);
 
   const [currentUser, setCurrentUser] = useState({
     id: 1,
@@ -90,14 +90,12 @@ function CartPage() {
     console.log(idToDelete);
     //API call
     //set local storage with new array
+    //set idToDelete to null
   };
 
   const showDeleteModal = (id) => {
-    setIsDeleteModal(true);
+    setModalShow(true);
     setIdToDelete(id);
-  };
-  const hideDeleteModal = () => {
-    setIsDeleteModal(false);
   };
 
   const arrayToLocalStorage = ({ name, price, quantity }) => ({
@@ -140,16 +138,6 @@ function CartPage() {
     }
   }, []);
 
-  let deleteModal;
-  if (isDeleteModal) {
-    deleteModal = (
-      <DeleteItemModal
-        hideDeleteModal={hideDeleteModal}
-        deleteCartItem={deleteCartItem}
-      />
-    );
-  }
-
   let container;
   //items in cart and logged in
   if (cartItems && user_id) {
@@ -182,40 +170,11 @@ function CartPage() {
           </div>
         </div>
 
-        <div className="modal" role="dialog">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">
-                  Are you sure you want to delete this item?
-                </h5>
-                <button
-                  className="btn-close"
-                  type="button"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body"></div>
-              <div className="modal-footer d-flex justify-content-between">
-                <button
-                  className="btn btn-secondary"
-                  type="button"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  id="delete-item"
-                  type="button"
-                  className="btn btn-danger"
-                >
-                  Delete item
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DeleteItemModal
+          deleteCartItem={deleteCartItem}
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
         <div className="invalid bg-danger mt-5 d-none text-center">
           <p className="text-white p-3">
             An error occurred! Please check the addresses you entered.
@@ -456,10 +415,10 @@ function CartPage() {
         <h4 className="mt-5">Log in to continue.</h4>
         <Link to="/login">Login</Link>
 
-        {deleteModal}
         <DeleteItemModal
-          hideDeleteModal={hideDeleteModal}
           deleteCartItem={deleteCartItem}
+          show={modalShow}
+          onHide={() => setModalShow(false)}
         />
       </Container>
     );
