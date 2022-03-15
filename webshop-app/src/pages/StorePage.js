@@ -15,9 +15,12 @@ function StorePage() {
     <>
       <NavbarComponent />
       <PhoneList />
-      <Button variant="primary" onClick={() => setModalShow(true)}>
-        Add Phone
-      </Button>
+      <div className="d-flex justify-content-center mb-5 mt-5">
+        <Button variant="danger" onClick={() => setModalShow(true)}>
+            Add Phone
+        </Button>
+      </div>
+      
       <AddPhoneModal show={modalShow} onHide={() => setModalShow(false)} />
       <FooterComponent />
     </>

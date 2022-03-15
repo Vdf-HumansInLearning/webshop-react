@@ -20,6 +20,9 @@ function HomePage() {
                     </Col>
                     <Col xs={7}></Col>
                 </Row>
+                <div className="homepage-footer">
+                    <FooterComponent/>  
+                </div>
             </main>
             <FooterComponent position="absolute" page="Home"/>
         </>
