@@ -3,9 +3,9 @@ import { FaTwitterSquare } from 'react-icons/fa';
 import { FaLinkedin } from 'react-icons/fa';
 import { FaInstagramSquare } from 'react-icons/fa';
 
-function FooterComponent() {
+function FooterComponent(props) {
     return (
-        <div className="footer">
+        <div className={props.position === 'absolute'? props.page === 'Home'? "footer footer-home footer-absolute" : "footer footer-absolute" : "footer"}>
             <p>© 2022 Webshop | Follow us on</p>
             <ul className="footer-list">
                 <li className="footer-item"><a href="https://facebook.com/vodafonero" target="_blank" rel="noreferrer"><FaFacebookSquare/></a></li>

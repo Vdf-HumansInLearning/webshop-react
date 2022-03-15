@@ -13,10 +13,6 @@
     margin: 0;
 }
 
-.homepage-footer {
-    padding-top: 100px;
-}
-
-.footer-item > a:hover{
+.footer-home .footer-item > a:hover{
     color: white;
 }

@@ -24,6 +24,7 @@ function HomePage() {
                     <FooterComponent/>  
                 </div>
             </main>
+            <FooterComponent position="absolute" page="Home"/>
         </>
     );
 }
