@@ -10,17 +10,19 @@ import DeleteItemModal from "../components/cart/DeleteItemModal";
 function CartPage() {
   //when you first get it, add a totalCartItem value quantity * price for each item
 
-  const ordersInitial = [
-    { name: "Samsung Galaxy a52s 5G", price: "1849", quantity: 1, value: 0 },
-    { name: "Xiaomi Mi 11 Lite 5G", price: "1449", quantity: 1, value: 0 },
-  ];
-  // const ordersInitial = JSON.parse(localStorage.getItem("items"));
+  //if localStorage doesn't work, use this instead
+  // const ordersInitial = [
+  //   { name: "Samsung Galaxy a52s 5G", price: "1849", quantity: 1, value: 0 },
+  //   { name: "Xiaomi Mi 11 Lite 5G", price: "1449", quantity: 1, value: 0 },
+  // ];
+  const ordersInitial = JSON.parse(localStorage.getItem("items"));
+  const user_id = localStorage.getItem("user_id");
   const orders = ordersInitial.map((item, index) => ({
     ...item,
     value: item.price * item.quantity,
     id: index,
   }));
-  const user_id = localStorage.getItem("user_id");
+
   console.log(user_id);
 
   //call to users API
@@ -88,9 +90,16 @@ function CartPage() {
 
   const deleteCartItem = () => {
     console.log(idToDelete);
-    //API call
-    //set local storage with new array
-    //set idToDelete to null
+    let array = [...orders];
+    let foundIndex = array.findIndex((item) => item.id === idToDelete);
+    if (foundIndex) {
+      array.splice(foundIndex, 1);
+      const orders = array.map((item) => arrayToLocalStorage(item));
+      localStorage.setItem("items", JSON.stringify(orders));
+      console.log(array);
+      setCartItems(array);
+      setIdToDelete(null);
+    }
   };
 
   const showDeleteModal = (id) => {
