@@ -72,12 +72,6 @@ function Filters({
         </Offcanvas.Header>
         <Offcanvas.Body>
           <form action="/phones" id="filter-form" method="get">
-            <div>
-              <i
-                className="fas fa-window-close fa-2x close-form"
-                id="close-form"
-              ></i>
-            </div>
             <fieldset id="filter-brand" className="filter-brand">
               <h4>Brand:</h4>
               <div className="filter-item">
