@@ -21,6 +21,8 @@ function CartPage() {
   const NEW_ADDRESS = "new";
   const EXISTING_ADDRESS = "existing";
 
+  const url = "http://localhost:3001/";
+
   const ordersInitial = JSON.parse(localStorage.getItem("items"));
   const user_id = localStorage.getItem("user_id");
   const orders = ordersInitial.map((item, index) => ({
@@ -71,11 +73,9 @@ function CartPage() {
     let array = [...cartItems];
     const cartItemIndex = array.findIndex((item) => item.id === id);
     if (array[cartItemIndex].quantity < 5) {
-      console.log("increase");
       array[cartItemIndex].quantity = array[cartItemIndex].quantity + 1;
       array[cartItemIndex].value =
         array[cartItemIndex].quantity * array[cartItemIndex].price;
-      console.log(array);
       setCartItems(array);
       //set new cart value
       setTotalCartValue(totalCartValue + array[cartItemIndex].value);
@@ -113,14 +113,12 @@ function CartPage() {
   };
 
   const deleteCartItem = () => {
-    console.log(idToDelete);
     let array = [...orders];
     let foundIndex = array.findIndex((item) => item.id === idToDelete);
     if (foundIndex) {
       array.splice(foundIndex, 1);
       const orders = array.map((item) => arrayToLocalStorage(item));
       localStorage.setItem("items", JSON.stringify(orders));
-      console.log(array);
       setCartItems(array);
       setIdToDelete(null);
       setModalShow(false);
@@ -134,14 +132,12 @@ function CartPage() {
   });
 
   const getUser = (id) => {
-    console.log(id);
-    fetch("http://localhost:3001/users/" + id)
+    fetch(url + "users/" + id)
       .then((response) => response.json())
       .then((data) => {
         setCurrentUser(data);
         setBillingAddress(data.address);
         setDeliveryAddress(data.address);
-        console.log(currentUser);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -186,13 +182,38 @@ function CartPage() {
     console.log(billingAddress);
   };
 
-  const postOrder = (e) => {
+  const placeOrder = (e) => {
     e.preventDefault();
-    //if user is logged in else get the order from the inputs
-    //let order = addressType === "existing" ? { ...currentUser.address } : {};
-    //API POST request
 
-    //console.log(order);
+    const orders = cartItems.map((item) => arrayToLocalStorage(item));
+
+    let order = {
+      data: {
+        user: currentUser.id,
+        delivery_address: { ...deliveryAddress },
+        billing_address: { ...billingAddress },
+        items: orders,
+        total: totalCartValue,
+      },
+    };
+    console.log(order);
+
+    //validate addresses
+
+    fetch(url + "orders", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    }).then((data) => {
+      if (data.status === 200) {
+        localStorage.removeItem("items");
+        console.log("order successfull");
+        //show toast
+        //order successful
+      }
+    });
   };
 
   useEffect(() => {
@@ -274,7 +295,7 @@ function CartPage() {
           <span className="section-number">2</span>
           <h3>Select Address</h3>
         </div>
-        <form onSubmit={(e) => postOrder(e)} className="p-2 address-form">
+        <form onSubmit={(e) => placeOrder(e)} className="p-2 address-form">
           <div className="mb-3">
             <div className="row g-3 address-section">
               <h4>Delivery Address</h4>
