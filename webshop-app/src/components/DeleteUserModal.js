@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap"
 
-function DeleteUserModal(props) {
+function DeleteUserModal({ onHide, deleteUser, show }) {
 
     return (
         <Modal
-            {...props}
+            show={show}
             size="m"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -19,8 +19,8 @@ function DeleteUserModal(props) {
 
             </Modal.Body>
             <Modal.Footer style={{ justifyContent: "space-between" }}>
-                <Button variant="secondary" onClick={props.onHide}>Close</Button>
-                <Button variant="danger" onClick={() => props.deleteUser()}>Delete user</Button>
+                <Button variant="secondary" onClick={onHide}>Close</Button>
+                <Button variant="danger" onClick={deleteUser}>Delete user</Button>
             </Modal.Footer>
         </Modal>
 
