@@ -6,6 +6,7 @@ function DeleteUserModal({ onHide, deleteUser, show }) {
     return (
         <Modal
             show={show}
+            onHide={onHide}
             size="m"
             aria-labelledby="contained-modal-title-vcenter"
             centered

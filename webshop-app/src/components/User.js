@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DeleteUserModal from "./DeleteUserModal"
+import { Button, Card } from 'react-bootstrap'
 
 function User({
     id,
@@ -33,23 +34,25 @@ function User({
                     <p className="name fw-bold">{name}</p>
                     <p className="username fst-italic">#{username}</p>
                 </div>
-                <button className="btn-collapse btn btn-outline-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapseExample">
+                <Button variant="outline-dark" className="btn-collapse collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapseExample">
                     <i className="fas fa-chevron-circle-down"></i>
-                </button>
+                </Button>
                 {role === "admin"
                     ? ""
-                    : <button className="btn-delete btn btn-outline-danger" type="button" id={id} data-bs-toggle="modal"
+                    : <Button variant="outline-danger" className="btn-delete" id={id}
                         onClick={() => { setModalShow(true); openModal(id) }}
                     >
                         <i className="fas fa-trash-alt"></i>
-                    </button>}
+                    </Button>}
             </li>
             <div className="collapse" id={`collapse${id}`}>
-                <div className="card card-body">
-                    <p>Email: <span className="fw-light fst-italic">{email}</span></p>
-                    <p>Phone: <span className="fw-light fst-italic">{phone}</span></p>
-                    <p>Address: <span className="fw-light fst-italic">{address.street} street, {address.suite}, {address.zipcode}, {address.city}</span></p>
-                </div>
+                <Card>
+                    <Card.Body>
+                        <p>Email: <span className="fw-light fst-italic">{email}</span></p>
+                        <p>Phone: <span className="fw-light fst-italic">{phone}</span></p>
+                        <p>Address: <span className="fw-light fst-italic">{address.street} street, {address.suite}, {address.zipcode}, {address.city}</span></p>
+                    </Card.Body>
+                </Card>
             </div>
             <DeleteUserModal
                 deleteUser={deleteUser}
