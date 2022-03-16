@@ -17,6 +17,10 @@ function CartPage() {
   // ];
 
   //---DECLARATIONS---
+
+  const NEW_ADDRESS = "new";
+  const EXISTING_ADDRESS = "existing";
+
   const ordersInitial = JSON.parse(localStorage.getItem("items"));
   const user_id = localStorage.getItem("user_id");
   const orders = ordersInitial.map((item, index) => ({
@@ -26,15 +30,18 @@ function CartPage() {
   }));
 
   const addressOptions = [
-    { value: "existing", text: "Existing Address" },
-    { value: "new", text: "New Address" },
+    { value: EXISTING_ADDRESS, text: "Existing Address" },
+    { value: NEW_ADDRESS, text: "New Address" },
   ];
 
   const [cartItems, setCartItems] = useState([]);
   const [totalCartValue, setTotalCartValue] = useState(0);
   const [idToDelete, setIdToDelete] = useState(0);
   const [modalShow, setModalShow] = useState(false);
-  const [addressType, setAddressType] = useState("");
+  const [addressTypeDelivery, setAddressTypeDelivery] =
+    useState(EXISTING_ADDRESS);
+  const [addressTypeBilling, setAddressTypeBilling] =
+    useState(EXISTING_ADDRESS);
   const [currentUser, setCurrentUser] = useState({
     id: 1,
     name: "N/A",
@@ -44,6 +51,18 @@ function CartPage() {
     role: "N/A",
     address: { street: "N/A", suite: "N/A", city: "N/A", zipcode: "000000" },
     phone: "000000000",
+  });
+  const [deliveryAddress, setDeliveryAddress] = useState({
+    street: "",
+    suite: "",
+    city: "",
+    zipcode: "",
+  });
+  const [billingAddress, setBillingAddress] = useState({
+    street: "",
+    suite: "",
+    city: "",
+    zipcode: "",
   });
 
   //---METHODS---
@@ -104,6 +123,7 @@ function CartPage() {
       console.log(array);
       setCartItems(array);
       setIdToDelete(null);
+      setModalShow(false);
     }
   };
 
@@ -119,6 +139,8 @@ function CartPage() {
       .then((response) => response.json())
       .then((data) => {
         setCurrentUser(data);
+        setBillingAddress(data.address);
+        setDeliveryAddress(data.address);
         console.log(currentUser);
       })
       .catch((error) => {
@@ -126,17 +148,51 @@ function CartPage() {
       });
   };
 
-  const handleChangeAddress = (e) => {
-    setAddressType(e.target.value);
+  const handleChangDeliveryAddressType = (e) => {
+    const selectedValue = e.target.value;
+    setAddressTypeDelivery(selectedValue);
+    if (selectedValue === EXISTING_ADDRESS)
+      setDeliveryAddress({ ...currentUser.address });
+    else setDeliveryAddress({ street: "", suite: "", city: "", zipcode: "" });
+  };
+
+  const handleChangBillingAddressType = (e) => {
+    const selectedValue = e.target.value;
+
+    setAddressTypeBilling(selectedValue);
+    if (selectedValue === EXISTING_ADDRESS)
+      setBillingAddress({ ...currentUser.address });
+    else setBillingAddress({ street: "", suite: "", city: "", zipcode: "" });
+  };
+
+  const handleChangeDelivery = (e) => {
+    console.log(e);
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    setDeliveryAddress((previous) => {
+      return { ...previous, [name]: value };
+    });
+  };
+
+  const handleChangeBilling = (e) => {
+    console.log(e);
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    setBillingAddress((previous) => {
+      return { ...previous, [name]: value };
+    });
+    console.log(billingAddress);
   };
 
   const postOrder = (e) => {
     e.preventDefault();
     //if user is logged in else get the order from the inputs
-    let order = addressType === "existing" ? { ...currentUser.address } : {};
+    //let order = addressType === "existing" ? { ...currentUser.address } : {};
     //API POST request
 
-    console.log(order);
+    //console.log(order);
   };
 
   useEffect(() => {
@@ -149,7 +205,6 @@ function CartPage() {
 
   useEffect(() => {
     if (cartItems && user_id) {
-      setAddressType(addressOptions[0]);
       //set address fields
       getUser(user_id);
       const orders = ordersInitial.map((item, index) => ({
@@ -215,7 +270,7 @@ function CartPage() {
             An error occurred! Please check the addresses you entered.
           </p>
         </div>
-        <div className="section-title">
+        <div className="section-title mt-5">
           <span className="section-number">2</span>
           <h3>Select Address</h3>
         </div>
@@ -227,7 +282,10 @@ function CartPage() {
                 <label htmlFor="delivery-address-dropdown">
                   Choose an address:
                 </label>
-                <select onChange={handleChangeAddress}>
+                <select
+                  onChange={handleChangDeliveryAddressType}
+                  id="delivery-address-dropdown"
+                >
                   {addressOptions.map((item) => {
                     return (
                       <option key={item.value} value={item.value}>
@@ -239,110 +297,19 @@ function CartPage() {
               </div>
               <div className="col-md-4">
                 <div className="input-group">
-                  <span className="input-group-text">Street</span>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputStreetDelivery"
-                    value="Kulas Light"
-                    aria-describedby="inputGroupPrepend1"
-                    required=""
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-street"
-                >
-                  Invalid street format.
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text">City</span>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputCityDelivery"
-                    value="Gwenborough"
-                    aria-describedby="inputGroupPrepend2"
-                    required=""
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-city"
-                >
-                  Invalid city format.
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend3">
-                    Suite
-                  </span>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputSuiteDelivery"
-                    value="Apt. 556"
-                    aria-describedby="inputGroupPrepend3"
-                    required=""
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-suite"
-                >
-                  Invalid suite format.
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend4">
-                    Zip
-                  </span>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputZipDelivery"
-                    value="929985"
-                    aria-describedby="inputGroupPrepend4"
-                    required=""
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-zip"
-                >
-                  Invalid zip code format.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="billing-address">
-            <div className="row g-3 address-section">
-              <h4>Billing Address</h4>
-              <div className="col-12">
-                <label htmlFor="billing-address-dropdown">
-                  Choose an address:
-                </label>
-                <select id="billing-address-dropdown">
-                  <option value="existing">Existing address</option>
-                  <option value="new">New address</option>
-                </select>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
                   <span className="input-group-text" id="inputGroupPrepend1">
                     Street
                   </span>
                   <input
+                    onChange={handleChangeDelivery}
+                    value={deliveryAddress.street}
+                    name="street"
                     type="text"
                     className="form-control"
                     id="inputStreetBilling"
-                    value="Kulas Light"
                     aria-describedby="inputGroupPrepend1"
                     required=""
+                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
                   />
                 </div>
                 <div
@@ -358,12 +325,15 @@ function CartPage() {
                     City
                   </span>
                   <input
+                    onChange={handleChangeDelivery}
+                    value={deliveryAddress.city}
+                    name="city"
                     type="text"
                     className="form-control"
                     id="inputCityBilling"
-                    value="Gwenborough"
                     aria-describedby="inputGroupPrepend2"
                     required=""
+                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
                   />
                 </div>
                 <div
@@ -379,12 +349,15 @@ function CartPage() {
                     Suite
                   </span>
                   <input
+                    onChange={handleChangeDelivery}
+                    value={deliveryAddress.suite}
+                    name="suite"
                     type="text"
                     className="form-control"
                     id="inputSuiteBilling"
-                    value="Apt. 556"
                     aria-describedby="inputGroupPrepend3"
                     required=""
+                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
                   />
                 </div>
                 <div
@@ -400,15 +373,129 @@ function CartPage() {
                     Zip
                   </span>
                   <input
+                    onChange={handleChangeDelivery}
+                    value={deliveryAddress.zipcode}
+                    name="zipcode"
                     type="text"
                     className="form-control"
                     id="inputZipBilling"
-                    value="929985"
                     aria-describedby="inputGroupPrepend4"
                     required=""
+                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
                   />
                 </div>
                 <div className="invalid-feedback mb-2">
+                  Invalid zip code format.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="billing-address">
+            <div className="row g-3 address-section">
+              <h4>Billing Address</h4>
+              <div className="col-12">
+                <label htmlFor="billing-address-dropdown">
+                  Choose an address:
+                </label>
+                <select
+                  onChange={handleChangBillingAddressType}
+                  id="billing-address-dropdown"
+                >
+                  {addressOptions.map((item) => {
+                    return (
+                      <option key={item.value} value={item.value}>
+                        {item.text}{" "}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              <div className="col-md-4">
+                <div className="input-group">
+                  <span className="input-group-text">Street</span>
+                  <input
+                    onChange={handleChangeBilling}
+                    value={billingAddress.street}
+                    name="street"
+                    type="text"
+                    className="form-control"
+                    aria-describedby="inputGroupPrepend1"
+                    required=""
+                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                  />
+                </div>
+                <div
+                  className="invalid-feedback mb-2"
+                  id="invalid-delivery-street"
+                >
+                  Invalid street format.
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="input-group">
+                  <span className="input-group-text">City</span>
+                  <input
+                    onChange={handleChangeBilling}
+                    value={billingAddress.city}
+                    name="city"
+                    type="text"
+                    className="form-control"
+                    aria-describedby="inputGroupPrepend2"
+                    required=""
+                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                  />
+                </div>
+                <div
+                  className="invalid-feedback mb-2"
+                  id="invalid-delivery-city"
+                >
+                  Invalid city format.
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="input-group">
+                  <span className="input-group-text" id="inputGroupPrepend3">
+                    Suite
+                  </span>
+                  <input
+                    onChange={handleChangeBilling}
+                    value={billingAddress.suite}
+                    name="suite"
+                    type="text"
+                    className="form-control"
+                    aria-describedby="inputGroupPrepend3"
+                    required=""
+                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                  />
+                </div>
+                <div
+                  className="invalid-feedback mb-2"
+                  id="invalid-delivery-suite"
+                >
+                  Invalid suite format.
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="input-group">
+                  <span className="input-group-text" id="inputGroupPrepend4">
+                    Zip
+                  </span>
+                  <input
+                    onChange={handleChangeBilling}
+                    value={billingAddress.zipcode}
+                    name="zipcode"
+                    type="text"
+                    className="form-control"
+                    aria-describedby="inputGroupPrepend4"
+                    required=""
+                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                  />
+                </div>
+                <div
+                  className="invalid-feedback mb-2"
+                  id="invalid-delivery-zip"
+                >
                   Invalid zip code format.
                 </div>
               </div>
