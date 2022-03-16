@@ -15,6 +15,8 @@ function CartPage() {
   //   { name: "Samsung Galaxy a52s 5G", price: "1849", quantity: 1, value: 0 },
   //   { name: "Xiaomi Mi 11 Lite 5G", price: "1449", quantity: 1, value: 0 },
   // ];
+
+  //---DECLARATIONS---
   const ordersInitial = JSON.parse(localStorage.getItem("items"));
   const user_id = localStorage.getItem("user_id");
   const orders = ordersInitial.map((item, index) => ({
@@ -23,18 +25,16 @@ function CartPage() {
     id: index,
   }));
 
-  console.log(user_id);
+  const addressOptions = [
+    { value: "existing", text: "Existing Address" },
+    { value: "new", text: "New Address" },
+  ];
 
-  //call to users API
-  //localhost/users/id
-
-  const [cartItems, setCartItems] = useState(orders);
-
+  const [cartItems, setCartItems] = useState([]);
   const [totalCartValue, setTotalCartValue] = useState(0);
-
   const [idToDelete, setIdToDelete] = useState(0);
   const [modalShow, setModalShow] = useState(false);
-
+  const [addressType, setAddressType] = useState("");
   const [currentUser, setCurrentUser] = useState({
     id: 1,
     name: "N/A",
@@ -45,6 +45,8 @@ function CartPage() {
     address: { street: "N/A", suite: "N/A", city: "N/A", zipcode: "000000" },
     phone: "000000000",
   });
+
+  //---METHODS---
 
   const increaseQuantity = (id) => {
     let array = [...cartItems];
@@ -68,8 +70,6 @@ function CartPage() {
   };
 
   const decreaseQuantity = (id) => {
-    console.log("decrease");
-
     let array = [...cartItems];
     const cartItemIndex = array.findIndex((item) => item.id === id);
     if (array[cartItemIndex].quantity > 1) {
@@ -88,6 +88,11 @@ function CartPage() {
     }
   };
 
+  const showDeleteModal = (id) => {
+    setModalShow(true);
+    setIdToDelete(id);
+  };
+
   const deleteCartItem = () => {
     console.log(idToDelete);
     let array = [...orders];
@@ -100,11 +105,6 @@ function CartPage() {
       setCartItems(array);
       setIdToDelete(null);
     }
-  };
-
-  const showDeleteModal = (id) => {
-    setModalShow(true);
-    setIdToDelete(id);
   };
 
   const arrayToLocalStorage = ({ name, price, quantity }) => ({
@@ -126,6 +126,19 @@ function CartPage() {
       });
   };
 
+  const handleChangeAddress = (e) => {
+    setAddressType(e.target.value);
+  };
+
+  const postOrder = (e) => {
+    e.preventDefault();
+    //if user is logged in else get the order from the inputs
+    let order = addressType === "existing" ? { ...currentUser.address } : {};
+    //API POST request
+
+    console.log(order);
+  };
+
   useEffect(() => {
     let sum = 0;
     cartItems.forEach((item) => {
@@ -135,10 +148,23 @@ function CartPage() {
   }, [user_id, cartItems]);
 
   useEffect(() => {
-    //might need to change and leave only cartItems && user_id
     if (cartItems && user_id) {
+      setAddressType(addressOptions[0]);
+      //set address fields
       getUser(user_id);
+      const orders = ordersInitial.map((item, index) => ({
+        ...item,
+        value: item.price * item.quantity,
+        id: index,
+      }));
+      setCartItems(orders);
     } else if (cartItems) {
+      const orders = ordersInitial.map((item, index) => ({
+        ...item,
+        value: item.price * item.quantity,
+        id: index,
+      }));
+      setCartItems(orders);
       let sum = 0;
       cartItems.forEach((item) => {
         sum += item.value;
@@ -193,17 +219,22 @@ function CartPage() {
           <span className="section-number">2</span>
           <h3>Select Address</h3>
         </div>
-        <form className="p-2 address-form" id="address-form">
-          <div className="mb-3" id="delivery-address">
+        <form onSubmit={(e) => postOrder(e)} className="p-2 address-form">
+          <div className="mb-3">
             <div className="row g-3 address-section">
               <h4>Delivery Address</h4>
               <div className="col-12">
                 <label htmlFor="delivery-address-dropdown">
                   Choose an address:
                 </label>
-                <select id="delivery-address-dropdown">
-                  <option value="existing">Existing address</option>
-                  <option value="new">New address</option>
+                <select onChange={handleChangeAddress}>
+                  {addressOptions.map((item) => {
+                    return (
+                      <option key={item.value} value={item.value}>
+                        {item.text}{" "}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className="col-md-4">
