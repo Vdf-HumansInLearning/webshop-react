@@ -25,11 +25,6 @@ function CartPage() {
 
   const ordersInitial = JSON.parse(localStorage.getItem("items"));
   const user_id = localStorage.getItem("user_id");
-  const orders = ordersInitial.map((item, index) => ({
-    ...item,
-    value: item.price * item.quantity,
-    id: index,
-  }));
 
   const addressOptions = [
     { value: EXISTING_ADDRESS, text: "Existing Address" },
@@ -113,7 +108,7 @@ function CartPage() {
   };
 
   const deleteCartItem = () => {
-    let array = [...orders];
+    let array = [...cartItems];
     let foundIndex = array.findIndex((item) => item.id === idToDelete);
     if (foundIndex) {
       array.splice(foundIndex, 1);
@@ -225,7 +220,7 @@ function CartPage() {
   }, [user_id, cartItems]);
 
   useEffect(() => {
-    if (cartItems && user_id) {
+    if (ordersInitial && user_id) {
       //set address fields
       getUser(user_id);
       const orders = ordersInitial.map((item, index) => ({
@@ -234,7 +229,7 @@ function CartPage() {
         id: index,
       }));
       setCartItems(orders);
-    } else if (cartItems) {
+    } else if (ordersInitial) {
       const orders = ordersInitial.map((item, index) => ({
         ...item,
         value: item.price * item.quantity,
@@ -251,7 +246,7 @@ function CartPage() {
 
   let container;
   //items in cart and logged in
-  if (cartItems && user_id) {
+  if (ordersInitial && user_id) {
     container = (
       <Container className="mt-5 pt-5 text-center">
         <div className="section-title">
@@ -530,7 +525,7 @@ function CartPage() {
         </form>
       </Container>
     );
-  } else if (cartItems) {
+  } else if (ordersInitial) {
     //items in cart but not logged in
     container = (
       <Container className="mt-5 pt-5 text-center">
