@@ -11,7 +11,7 @@ function CartPage() {
   //when you first get it, add a totalCartItem value quantity * price for each item
 
   //if localStorage doesn't work, use this instead
-  // const ordersInitial = [
+  // const orderList = [
   //   { name: "Samsung Galaxy a52s 5G", price: "1849", quantity: 1, value: 0 },
   //   { name: "Xiaomi Mi 11 Lite 5G", price: "1449", quantity: 1, value: 0 },
   // ];
@@ -23,8 +23,9 @@ function CartPage() {
 
   const url = "http://localhost:3001/";
 
-  const ordersInitial = JSON.parse(localStorage.getItem("items"));
-  const user_id = localStorage.getItem("user_id");
+  const orderList = JSON.parse(localStorage.getItem("items"));
+  const userId = localStorage.getItem("user_id");
+  const isLoggedIn = userId ? true : false;
 
   const addressOptions = [
     { value: EXISTING_ADDRESS, text: "Existing Address" },
@@ -217,20 +218,20 @@ function CartPage() {
       sum += item.value;
     });
     setTotalCartValue(sum);
-  }, [user_id, cartItems]);
+  }, [isLoggedIn, cartItems]);
 
   useEffect(() => {
-    if (ordersInitial && user_id) {
+    if (orderList && isLoggedIn) {
       //set address fields
-      getUser(user_id);
-      const orders = ordersInitial.map((item, index) => ({
+      getUser(userId);
+      const orders = orderList.map((item, index) => ({
         ...item,
         value: item.price * item.quantity,
         id: index,
       }));
       setCartItems(orders);
-    } else if (ordersInitial) {
-      const orders = ordersInitial.map((item, index) => ({
+    } else if (orderList) {
+      const orders = orderList.map((item, index) => ({
         ...item,
         value: item.price * item.quantity,
         id: index,
@@ -244,341 +245,301 @@ function CartPage() {
     }
   }, []);
 
-  let container;
-  //items in cart and logged in
-  if (ordersInitial && user_id) {
-    container = (
-      <Container className="mt-5 pt-5 text-center">
-        <div className="section-title">
-          <span className="section-number">1</span>
-          <h3>Order Summary</h3>
-        </div>
+  //no items in cart and not logged in
+  if (!(orderList && isLoggedIn)) {
+    return (
+      <>
+        <NavbarComponent />
+        <Container className="mt-5 pt-5 text-center">
+          <h4>Your cart is empty</h4>
 
-        <div className="order">
-          {cartItems.map((order) => {
-            return (
-              <CartItem
-                key={order.name}
-                cartItem={order}
-                increaseQuantity={increaseQuantity}
-                decreaseQuantity={decreaseQuantity}
-                showDeleteModal={showDeleteModal}
-              />
-            );
-          })}
-
-          <div
-            className="order-total d-flex justify-content-between p-2"
-            id="order-total"
-          >
-            <h4>Total:</h4>
-            <h4>{totalCartValue} RON</h4>
-          </div>
-        </div>
-
-        <DeleteItemModal
-          deleteCartItem={deleteCartItem}
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-        />
-        <div className="invalid bg-danger mt-5 d-none text-center">
-          <p className="text-white p-3">
-            An error occurred! Please check the addresses you entered.
-          </p>
-        </div>
-        <div className="section-title mt-5">
-          <span className="section-number">2</span>
-          <h3>Select Address</h3>
-        </div>
-        <form onSubmit={(e) => placeOrder(e)} className="p-2 address-form">
-          <div className="mb-3">
-            <div className="row g-3 address-section">
-              <h4>Delivery Address</h4>
-              <div className="col-12">
-                <label htmlFor="delivery-address-dropdown">
-                  Choose an address:
-                </label>
-                <select
-                  onChange={handleChangDeliveryAddressType}
-                  id="delivery-address-dropdown"
-                >
-                  {addressOptions.map((item) => {
-                    return (
-                      <option key={item.value} value={item.value}>
-                        {item.text}{" "}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend1">
-                    Street
-                  </span>
-                  <input
-                    onChange={handleChangeDelivery}
-                    value={deliveryAddress.street}
-                    name="street"
-                    type="text"
-                    className="form-control"
-                    id="inputStreetBilling"
-                    aria-describedby="inputGroupPrepend1"
-                    required=""
-                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-billing-street"
-                >
-                  Invalid street format.
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend2">
-                    City
-                  </span>
-                  <input
-                    onChange={handleChangeDelivery}
-                    value={deliveryAddress.city}
-                    name="city"
-                    type="text"
-                    className="form-control"
-                    id="inputCityBilling"
-                    aria-describedby="inputGroupPrepend2"
-                    required=""
-                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-billing-city"
-                >
-                  Invalid city format.
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend3">
-                    Suite
-                  </span>
-                  <input
-                    onChange={handleChangeDelivery}
-                    value={deliveryAddress.suite}
-                    name="suite"
-                    type="text"
-                    className="form-control"
-                    id="inputSuiteBilling"
-                    aria-describedby="inputGroupPrepend3"
-                    required=""
-                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-billing-suite"
-                >
-                  Invalid suite format.
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend4">
-                    Zip
-                  </span>
-                  <input
-                    onChange={handleChangeDelivery}
-                    value={deliveryAddress.zipcode}
-                    name="zipcode"
-                    type="text"
-                    className="form-control"
-                    id="inputZipBilling"
-                    aria-describedby="inputGroupPrepend4"
-                    required=""
-                    readOnly={addressTypeDelivery === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div className="invalid-feedback mb-2">
-                  Invalid zip code format.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="billing-address">
-            <div className="row g-3 address-section">
-              <h4>Billing Address</h4>
-              <div className="col-12">
-                <label htmlFor="billing-address-dropdown">
-                  Choose an address:
-                </label>
-                <select
-                  onChange={handleChangBillingAddressType}
-                  id="billing-address-dropdown"
-                >
-                  {addressOptions.map((item) => {
-                    return (
-                      <option key={item.value} value={item.value}>
-                        {item.text}{" "}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text">Street</span>
-                  <input
-                    onChange={handleChangeBilling}
-                    value={billingAddress.street}
-                    name="street"
-                    type="text"
-                    className="form-control"
-                    aria-describedby="inputGroupPrepend1"
-                    required=""
-                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-street"
-                >
-                  Invalid street format.
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text">City</span>
-                  <input
-                    onChange={handleChangeBilling}
-                    value={billingAddress.city}
-                    name="city"
-                    type="text"
-                    className="form-control"
-                    aria-describedby="inputGroupPrepend2"
-                    required=""
-                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-city"
-                >
-                  Invalid city format.
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend3">
-                    Suite
-                  </span>
-                  <input
-                    onChange={handleChangeBilling}
-                    value={billingAddress.suite}
-                    name="suite"
-                    type="text"
-                    className="form-control"
-                    aria-describedby="inputGroupPrepend3"
-                    required=""
-                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-suite"
-                >
-                  Invalid suite format.
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroupPrepend4">
-                    Zip
-                  </span>
-                  <input
-                    onChange={handleChangeBilling}
-                    value={billingAddress.zipcode}
-                    name="zipcode"
-                    type="text"
-                    className="form-control"
-                    aria-describedby="inputGroupPrepend4"
-                    required=""
-                    readOnly={addressTypeBilling === EXISTING_ADDRESS}
-                  />
-                </div>
-                <div
-                  className="invalid-feedback mb-2"
-                  id="invalid-delivery-zip"
-                >
-                  Invalid zip code format.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex justify-content-end mt-3">
-            <button className="order-btn btn btn-outline-dark" type="submit">
-              Place Order
-            </button>
-          </div>
-        </form>
-      </Container>
-    );
-  } else if (ordersInitial) {
-    //items in cart but not logged in
-    container = (
-      <Container className="mt-5 pt-5 text-center">
-        <div className="section-title">
-          <span className="section-number">1</span>
-          <h3>Order Summary</h3>
-        </div>
-
-        <div className="order">
-          {cartItems.map((order) => {
-            return (
-              <CartItem
-                key={order.name}
-                cartItem={order}
-                increaseQuantity={increaseQuantity}
-                decreaseQuantity={decreaseQuantity}
-                showDeleteModal={showDeleteModal}
-              />
-            );
-          })}
-          <div
-            className="order-total d-flex justify-content-between p-2"
-            id="order-total"
-          >
-            <h4>Total:</h4>
-            <h4>{totalCartValue} RON</h4>
-          </div>
-        </div>
-
-        <h4 className="mt-5">Log in to continue.</h4>
-        <Link to="/login">Login</Link>
-
-        <DeleteItemModal
-          deleteCartItem={deleteCartItem}
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-        />
-      </Container>
-    );
-  } else {
-    //no items in cart and not logged in
-    container = (
-      <Container className="mt-5 pt-5 text-center">
-        <h4>Your cart is empty</h4>
-
-        <Link to="/phones">Continue shopping</Link>
-      </Container>
+          <Link to="/phones">Continue shopping</Link>
+        </Container>
+        <FooterComponent />
+      </>
     );
   }
+
+  //items in cart and logged in
+  const orderSummary = (
+    <>
+      {" "}
+      <div className="section-title">
+        <span className="section-number">1</span>
+        <h3>Order Summary</h3>
+      </div>
+      <div className="order">
+        {cartItems.map((order) => {
+          return (
+            <CartItem
+              key={order.name}
+              cartItem={order}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+              showDeleteModal={showDeleteModal}
+            />
+          );
+        })}
+
+        <div
+          className="order-total d-flex justify-content-between p-2"
+          id="order-total"
+        >
+          <h4>Total:</h4>
+          <h4>{totalCartValue} RON</h4>
+        </div>
+      </div>
+      <DeleteItemModal
+        deleteCartItem={deleteCartItem}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
+      <div className="invalid bg-danger mt-5 d-none text-center">
+        <p className="text-white p-3">
+          An error occurred! Please check the addresses you entered.
+        </p>
+      </div>
+    </>
+  );
+
+  const address = (
+    <>
+      {" "}
+      <div className="section-title mt-5">
+        <span className="section-number">2</span>
+        <h3>Select Address</h3>
+      </div>
+      <form onSubmit={(e) => placeOrder(e)} className="p-2 address-form">
+        <div className="mb-3">
+          <div className="row g-3 address-section">
+            <h4>Delivery Address</h4>
+            <div className="col-12">
+              <label htmlFor="delivery-address-dropdown">
+                Choose an address:
+              </label>
+              <select
+                onChange={handleChangDeliveryAddressType}
+                id="delivery-address-dropdown"
+              >
+                {addressOptions.map((item) => {
+                  return (
+                    <option key={item.value} value={item.value}>
+                      {item.text}{" "}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group">
+                <span className="input-group-text" id="inputGroupPrepend1">
+                  Street
+                </span>
+                <input
+                  onChange={handleChangeDelivery}
+                  value={deliveryAddress.street}
+                  name="street"
+                  type="text"
+                  className="form-control"
+                  id="inputStreetBilling"
+                  aria-describedby="inputGroupPrepend1"
+                  required=""
+                  readOnly={addressTypeDelivery === EXISTING_ADDRESS}
+                />
+              </div>
+              <div
+                className="invalid-feedback mb-2"
+                id="invalid-billing-street"
+              >
+                Invalid street format.
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group">
+                <span className="input-group-text" id="inputGroupPrepend2">
+                  City
+                </span>
+                <input
+                  onChange={handleChangeDelivery}
+                  value={deliveryAddress.city}
+                  name="city"
+                  type="text"
+                  className="form-control"
+                  id="inputCityBilling"
+                  aria-describedby="inputGroupPrepend2"
+                  required=""
+                  readOnly={addressTypeDelivery === EXISTING_ADDRESS}
+                />
+              </div>
+              <div className="invalid-feedback mb-2" id="invalid-billing-city">
+                Invalid city format.
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group">
+                <span className="input-group-text" id="inputGroupPrepend3">
+                  Suite
+                </span>
+                <input
+                  onChange={handleChangeDelivery}
+                  value={deliveryAddress.suite}
+                  name="suite"
+                  type="text"
+                  className="form-control"
+                  id="inputSuiteBilling"
+                  aria-describedby="inputGroupPrepend3"
+                  required=""
+                  readOnly={addressTypeDelivery === EXISTING_ADDRESS}
+                />
+              </div>
+              <div className="invalid-feedback mb-2" id="invalid-billing-suite">
+                Invalid suite format.
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="input-group">
+                <span className="input-group-text" id="inputGroupPrepend4">
+                  Zip
+                </span>
+                <input
+                  onChange={handleChangeDelivery}
+                  value={deliveryAddress.zipcode}
+                  name="zipcode"
+                  type="text"
+                  className="form-control"
+                  id="inputZipBilling"
+                  aria-describedby="inputGroupPrepend4"
+                  required=""
+                  readOnly={addressTypeDelivery === EXISTING_ADDRESS}
+                />
+              </div>
+              <div className="invalid-feedback mb-2">
+                Invalid zip code format.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="billing-address">
+          <div className="row g-3 address-section">
+            <h4>Billing Address</h4>
+            <div className="col-12">
+              <label htmlFor="billing-address-dropdown">
+                Choose an address:
+              </label>
+              <select
+                onChange={handleChangBillingAddressType}
+                id="billing-address-dropdown"
+              >
+                {addressOptions.map((item) => {
+                  return (
+                    <option key={item.value} value={item.value}>
+                      {item.text}{" "}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            <div className="col-md-4">
+              <div className="input-group">
+                <span className="input-group-text">Street</span>
+                <input
+                  onChange={handleChangeBilling}
+                  value={billingAddress.street}
+                  name="street"
+                  type="text"
+                  className="form-control"
+                  aria-describedby="inputGroupPrepend1"
+                  required=""
+                  readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                />
+              </div>
+              <div
+                className="invalid-feedback mb-2"
+                id="invalid-delivery-street"
+              >
+                Invalid street format.
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group">
+                <span className="input-group-text">City</span>
+                <input
+                  onChange={handleChangeBilling}
+                  value={billingAddress.city}
+                  name="city"
+                  type="text"
+                  className="form-control"
+                  aria-describedby="inputGroupPrepend2"
+                  required=""
+                  readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                />
+              </div>
+              <div className="invalid-feedback mb-2" id="invalid-delivery-city">
+                Invalid city format.
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group">
+                <span className="input-group-text" id="inputGroupPrepend3">
+                  Suite
+                </span>
+                <input
+                  onChange={handleChangeBilling}
+                  value={billingAddress.suite}
+                  name="suite"
+                  type="text"
+                  className="form-control"
+                  aria-describedby="inputGroupPrepend3"
+                  required=""
+                  readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                />
+              </div>
+              <div
+                className="invalid-feedback mb-2"
+                id="invalid-delivery-suite"
+              >
+                Invalid suite format.
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="input-group">
+                <span className="input-group-text" id="inputGroupPrepend4">
+                  Zip
+                </span>
+                <input
+                  onChange={handleChangeBilling}
+                  value={billingAddress.zipcode}
+                  name="zipcode"
+                  type="text"
+                  className="form-control"
+                  aria-describedby="inputGroupPrepend4"
+                  required=""
+                  readOnly={addressTypeBilling === EXISTING_ADDRESS}
+                />
+              </div>
+              <div className="invalid-feedback mb-2" id="invalid-delivery-zip">
+                Invalid zip code format.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="d-flex justify-content-end mt-3">
+          <button className="order-btn btn btn-outline-dark" type="submit">
+            Place Order
+          </button>
+        </div>
+      </form>{" "}
+    </>
+  );
+
   return (
     <>
       <NavbarComponent />
-      {container}
+      <Container className="mt-5 pt-5 text-center">
+        {orderSummary}
+        {orderList && isLoggedIn && address}
+      </Container>
       <FooterComponent />
     </>
   );
