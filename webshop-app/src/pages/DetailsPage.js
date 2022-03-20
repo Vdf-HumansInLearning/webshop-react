@@ -5,7 +5,7 @@ import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 
 function DetailsPage() {
-  const [phone, setPhone] = useState({});
+  const [phone, setPhone] = useState(null);
 
   useEffect(() => {
     axios
@@ -15,30 +15,28 @@ function DetailsPage() {
       });
   }, []);
 
-  function getRating(rating) {
-    let elements = ["Rating: "];
+  // function getRating(rating) {
+  //   let elements = ["Rating: "];
 
-    for (let i = 1; i <= 5; i++) {
-      Math.trunc(rating) >= i
-        ? elements.push(
-            React.createElement("span", { className: "fa fa-star checked" })
-          )
-        : // <span className="fa fa-star checked"></span>
-          elements.push(
-            React.createElement("span", { className: "fa fa-star unchecked" })
-          );
-      // <span className="fa fa-star unchecked"></span>
-    }
+  //   for (let i = 1; i <= 5; i++) {
+  //     Math.trunc(rating) >= i
+  //       ? elements.push(
+  //           React.createElement("span", { className: "fa fa-star checked" })
+  //         )
+  //       : // <span className="fa fa-star checked"></span>
+  //         elements.push(
+  //           React.createElement("span", { className: "fa fa-star unchecked" })
+  //         );
+  //     // <span className="fa fa-star unchecked"></span>
+  //   }
 
-    rating > 0
-      ? elements.push(React.createElement("span", rating))
-      : elements.push(React.createElement("span", "(-)"));
+  //   rating > 0
+  //     ? elements.push(React.createElement("span", rating))
+  //     : elements.push(React.createElement("span", "(-)"));
 
-    let starRating = React.createElement("h5", elements);
-    return starRating;
-  }
-
-  console.log(phone.image);
+  //   let starRating = React.createElement("h5", elements);
+  //   return starRating;
+  // }
 
   return (
     <>
@@ -57,7 +55,7 @@ function DetailsPage() {
             <div className="row">
               <div className="phone-img col-sm-6 col-12" id="phone-img">
                 <img
-                  src={`../../public/images/${phone.image}`}
+                  src={"/images/" + phone.image}
                   alt="Phone placeholder"
                 ></img>
               </div>
@@ -85,7 +83,6 @@ function DetailsPage() {
                    )}
                 </h5> */}
                 </div>
-                <p>(Average: average </p>
                 <h5>
                   Operating system :{" "}
                   <span className="detail-value">{phone.operating_system}</span>
