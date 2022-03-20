@@ -4,6 +4,7 @@ import Order from "../components/Order";
 import "../css/Orders.css";
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -42,9 +43,15 @@ function OrdersPage() {
           ))}
         </main>
       ) : loggedIn && orders.length === 0 ? (
-        <p>orders empty </p>
+        <div className="text-center mt-5">
+          <h3>You don't have any orders yet</h3>
+          <Link to="/">Go back to Home page</Link>
+        </div>
       ) : (
-        <p>you are not logged in</p>
+        <div className="text-center mt-5">
+          <h3>You're not allowed on this page</h3>
+          <Link to="/">Go back to Home page</Link>
+        </div>
       )}
       <FooterComponent />
     </>
