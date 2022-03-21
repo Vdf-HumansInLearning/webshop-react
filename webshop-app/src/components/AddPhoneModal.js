@@ -1,8 +1,47 @@
 import { Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { useState } from "react";
 import "../css/Modal.css";
 
 function AddPhoneModal(props) {
+  const [phoneToAdd, setPhoneToAdd] = useState({
+    name: "",
+    brand: "",
+    operating_system: "",
+    price: "",
+    discount: "",
+    quantity: "",
+    availability_date: "",
+    rating: "",
+    image: "toppng.com-samsung-phone-833x870.png",
+  });
+
+  const handleChangeAddPhone = (e) => {
+    console.log(e);
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    setPhoneToAdd({ ...phoneToAdd, [name]: value });
+  };
+
+  const addPhone = (e) => {
+    e.preventDefault();
+    console.log(phoneToAdd);
+    fetch("http://localhost:3001/phones", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(phoneToAdd),
+    }).then((data) => {
+      if (data.status === 200) {
+        console.log("phone added");
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
   return (
     <Modal
       {...props}
@@ -18,7 +57,11 @@ function AddPhoneModal(props) {
           id="new-phone-container"
           className="new-phone hide d-flex justify-content-center flex-column align-items-center text-left"
         >
-          <form className="new-phone-form" id="new-phone-form">
+          <form
+            onSubmit={(e) => addPhone(e)}
+            className="new-phone-form"
+            id="new-phone-form"
+          >
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
@@ -35,6 +78,7 @@ function AddPhoneModal(props) {
                 placeholder="ex. : Samsung"
                 aria-label="ex. : Samsung"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
                 required
               ></input>
             </div>
@@ -57,6 +101,7 @@ function AddPhoneModal(props) {
                 placeholder="ex. : Galaxy S21"
                 aria-label="ex. : Galaxy S21"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
                 required
               ></input>
             </div>
@@ -64,17 +109,22 @@ function AddPhoneModal(props) {
               Invalid product name.
             </div>
             <div className="input-group mb-3">
-              <span className="input-group-text" htmlFor="add-os" id="basic-addon1">
+              <span
+                className="input-group-text"
+                htmlFor="add-os"
+                id="basic-addon1"
+              >
                 OS*
               </span>
               <input
                 id="add-os"
-                name="os"
+                name="operating_system"
                 type="text"
                 className="form-control"
                 placeholder="ex. : Android, iOS"
                 aria-label="ex. : Android, iOS"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
                 required
               ></input>
             </div>
@@ -97,6 +147,7 @@ function AddPhoneModal(props) {
                 placeholder="ex. : 899"
                 aria-label="ex. : 899"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
                 required
               ></input>
             </div>
@@ -119,6 +170,8 @@ function AddPhoneModal(props) {
                 placeholder="ex. : 250"
                 aria-label="ex. : 250"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
+                required
               ></input>
             </div>
             <div className="invalid-feedback mb-2" id="invalid-discount-add">
@@ -140,6 +193,7 @@ function AddPhoneModal(props) {
                 placeholder="ex. : 100"
                 aria-label="ex. : 100"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
                 required
               ></input>
             </div>
@@ -157,11 +211,12 @@ function AddPhoneModal(props) {
               <input
                 id="add-date"
                 type="text"
-                name="date"
+                name="availability_date"
                 className="form-control"
                 placeholder="ex. : 2021-08-13"
                 aria-label="ex. : 2021-08-13"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
                 required
               ></input>
             </div>
@@ -184,6 +239,8 @@ function AddPhoneModal(props) {
                 placeholder="ex. : 4.5"
                 aria-label="ex. : 4.5"
                 aria-describedby="basic-addon1"
+                onChange={handleChangeAddPhone}
+                required
               ></input>
             </div>
             <div className="invalid-feedback mb-2" id="invalid-rating-add">
@@ -194,13 +251,9 @@ function AddPhoneModal(props) {
       </Modal.Body>
       <Modal.Footer>
         <div className="add-new-buttons d-flex justify-content-between">
-          <button
-            type="submit"
-            id="add-phone"
-            className="btn btn-danger text-center"
-          >
+          <Button variant="danger" onClick={addPhone}>
             Add
-          </button>
+          </Button>
           <Button onClick={props.onHide}>Cancel</Button>
         </div>
       </Modal.Footer>
