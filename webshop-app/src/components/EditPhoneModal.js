@@ -1,8 +1,47 @@
 import { Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { useState } from "react";
 import "../css/Modal.css";
 
 function EditPhoneModal(props) {
+  const [phoneToEdit, setPhoneToEdit] = useState({
+    name: props.name,
+    brand: props.brand,
+    operating_system: props.os,
+    price: props.price,
+    discount: props.discount,
+    quantity: props.quantity,
+    availability_date: props.date,
+    rating: props.rating,
+    image: props.image,
+  });
+
+  const handleChangeEditPhone = (e) => {
+    console.log(e);
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    setPhoneToEdit({ ...phoneToEdit, [name]: value });
+  };
+
+  const editPhone = (e) => {
+    e.preventDefault();
+    console.log(phoneToEdit);
+    fetch("http://localhost:3001/phones/" + props.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(phoneToEdit),
+    }).then((data) => {
+      if (data.status === 201) {
+        console.log("phone edited");
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
   return (
     <Modal
       {...props}
@@ -18,12 +57,15 @@ function EditPhoneModal(props) {
           id="edit-phone-container"
           className="edit-phone d-flex justify-content-center flex-column align-items-center text-left"
         >
-          <form className="edit-phone-form" id="edit-phone-form">
-            <input type="hidden" defaultValue={""} id="edit-id" />
+          <form
+            onSubmit={(e) => editPhone(e)}
+            className="edit-phone-form"
+            id="edit-phone-form"
+          >
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-brand"
+                htmlFor="edit-brand"
                 id="basic-addon1"
               >
                 Brand*
@@ -33,6 +75,7 @@ function EditPhoneModal(props) {
                 name="brand"
                 type="text"
                 defaultValue={props.brand}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : Samsung"
                 aria-label="ex. : Samsung"
@@ -46,7 +89,7 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-name"
+                htmlFor="edit-name"
                 id="basic-addon1"
               >
                 Name*
@@ -56,6 +99,7 @@ function EditPhoneModal(props) {
                 name="name"
                 type="text"
                 defaultValue={props.name}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : Galaxy S21"
                 aria-label="ex. : Galaxy S21"
@@ -69,16 +113,17 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-os"
+                htmlFor="edit-os"
                 id="basic-addon1"
               >
                 OS*
               </span>
               <input
                 id="edit-os"
-                name="os"
+                name="operating_system"
                 type="text"
                 defaultValue={props.os}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : Android, iOS"
                 aria-label="ex. : Android, iOS"
@@ -92,7 +137,7 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-price"
+                htmlFor="edit-price"
                 id="basic-addon1"
               >
                 Price*
@@ -102,6 +147,7 @@ function EditPhoneModal(props) {
                 name="price"
                 type="text"
                 defaultValue={props.price}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : 899"
                 aria-label="ex. : 899"
@@ -115,7 +161,7 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-discount"
+                htmlFor="edit-discount"
                 id="basic-addon1"
               >
                 Discount
@@ -125,6 +171,7 @@ function EditPhoneModal(props) {
                 name="discount"
                 type="text"
                 defaultValue={props.discount}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : 250"
                 aria-label="ex. : 250"
@@ -137,7 +184,7 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-quantity"
+                htmlFor="edit-quantity"
                 id="basic-addon1"
               >
                 Quantity*
@@ -147,6 +194,7 @@ function EditPhoneModal(props) {
                 name="quantity"
                 type="text"
                 defaultValue={props.quantity}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : 100"
                 aria-label="ex. : 100"
@@ -160,7 +208,7 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-date"
+                htmlFor="edit-date"
                 id="basic-addon1"
               >
                 Availability date*
@@ -169,7 +217,8 @@ function EditPhoneModal(props) {
                 id="edit-date"
                 type="text"
                 defaultValue={props.date}
-                name="date"
+                onChange={handleChangeEditPhone}
+                name="availability_date"
                 className="form-control"
                 placeholder="ex. : 2021-08-13"
                 aria-label="ex. : 2021-08-13"
@@ -183,7 +232,7 @@ function EditPhoneModal(props) {
             <div className="input-group mb-3">
               <span
                 className="input-group-text"
-                for="edit-rating"
+                htmlFor="edit-rating"
                 id="basic-addon1"
               >
                 Rating
@@ -193,6 +242,7 @@ function EditPhoneModal(props) {
                 name="rating"
                 type="text"
                 defaultValue={props.rating}
+                onChange={handleChangeEditPhone}
                 className="form-control"
                 placeholder="ex. : 4.5"
                 aria-label="ex. : 4.5"
@@ -206,14 +256,10 @@ function EditPhoneModal(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <div classNameName="add-new-buttons d-flex justify-content-between">
-          <button
-            type="submit"
-            id="edit-phone"
-            className="btn btn-danger text-center"
-          >
+        <div className="add-new-buttons d-flex justify-content-between">
+          <Button variant="danger" onClick={editPhone}>
             Save changes
-          </button>
+          </Button>
           <Button onClick={props.onHide}>Cancel</Button>
         </div>
       </Modal.Footer>

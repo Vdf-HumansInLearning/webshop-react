@@ -32,6 +32,7 @@ function Phone({
         show={deleteModalShow}
       />
       <EditPhoneModal
+        id={id}
         brand={brand}
         name={name}
         os={os}
@@ -40,6 +41,7 @@ function Phone({
         quantity={quantity}
         date={date}
         rating={rating}
+        image={image}
         show={editModalShow}
         onHide={() => setEditModalShow(false)}
       />
