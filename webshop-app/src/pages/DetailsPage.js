@@ -6,10 +6,12 @@ import NavbarComponent from "../components/NavbarComponent";
 
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
-
   useEffect(() => {
+    const afterLastSlash = window.location.pathname.substring(
+      window.location.pathname.lastIndexOf("/") + 1
+    );
     axios
-      .get("http://localhost:3001/phones/" + window.location.pathname.slice(-1))
+      .get("http://localhost:3001/phones/" + afterLastSlash)
       .then(function (response) {
         setPhone(response.data);
       });
