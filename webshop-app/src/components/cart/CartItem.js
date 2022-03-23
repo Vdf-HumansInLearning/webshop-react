@@ -1,9 +1,4 @@
-function CartItem({
-  cartItem,
-  increaseQuantity,
-  decreaseQuantity,
-  showDeleteModal,
-}) {
+function CartItem({ cartItem, changeQuantity, showDeleteModal }) {
   return (
     <div className="p-2 item-container">
       <h4 className="item-container-product">{cartItem.name}</h4>
@@ -13,7 +8,7 @@ function CartItem({
           <span>
             <button
               onClick={() => {
-                decreaseQuantity(cartItem.id);
+                changeQuantity(cartItem.id, "decrease");
               }}
               disabled={cartItem.quantity < 2}
               className="quantity-btn minus-btn"
@@ -25,7 +20,7 @@ function CartItem({
           <span>
             <button
               onClick={() => {
-                increaseQuantity(cartItem.id);
+                changeQuantity(cartItem.id, "increase");
               }}
               disabled={cartItem.quantity > 5}
               className="quantity-btn plus-btn"
