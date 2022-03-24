@@ -1,4 +1,4 @@
-.main {
+.main-homepage {
     width: 100%;
     height: calc(100vh - 56px);
     background-image: url("https://cdn.vodafone.co.uk/en/assets/images/extralarge/IMG_Background_Polygon_Red.jpg");
@@ -9,14 +9,17 @@
 
 .main-content {
     width: 100%;
-    height: calc(100vh - 112px);
+    height: calc(100vh - 330px);
     margin: 0;
 }
 
-.footer {
-    position: absolute;
+.footer-home .footer-item > a:hover{
+    color: white;
 }
 
-.footer-item > a:hover{
-    color: white;
+.homepage-footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    margin: auto;
 }

@@ -10,7 +10,7 @@ function HomePage() {
     return (
         <>
             <NavbarComponent />
-            <main className="main pt-5">
+            <main className="main-homepage pt-5">
                 <Row className="main-content d-flex justify-content-start align-items-center">
                     <Col xs={1}>
                     </Col>
@@ -20,8 +20,10 @@ function HomePage() {
                     </Col>
                     <Col xs={7}></Col>
                 </Row>
+                <div className="homepage-footer">
+                    <FooterComponent/>  
+                </div>
             </main>
-            <FooterComponent/>
         </>
     );
 }
