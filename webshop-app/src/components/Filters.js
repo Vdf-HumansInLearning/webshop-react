@@ -38,7 +38,7 @@ function Filters({
                 aria-describedby="basic-addon1"
               />
             </div>
-            <div className="order d-flex mt-3 ps-2">
+            <div className="d-flex mt-3 ps-2">
               <label className="input-group-text" htmlFor="sort">
                 <i className="fas fa-sort"></i>Sort by
               </label>

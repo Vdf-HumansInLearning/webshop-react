@@ -10,15 +10,21 @@ import "../css/StorePage.css";
 function StorePage() {
   const [addModalShow, setAddModalShow] = useState(false);
 
+  let isAdmin = false;
+  
+  localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? isAdmin = true : isAdmin = false;
+
   return (
     <>
       <NavbarComponent />
       <PhoneList />
-      <div className="d-flex justify-content-center mb-5 mt-5">
+      { isAdmin &&
+        <div className="d-flex justify-content-center mb-5 mt-5">
         <Button variant="danger" onClick={() => setAddModalShow(true)}>
           Add Phone
         </Button>
-      </div>
+        </div>
+      } 
       <AddPhoneModal
         show={addModalShow}
         onHide={() => setAddModalShow(false)}

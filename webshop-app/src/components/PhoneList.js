@@ -55,7 +55,7 @@ function PhoneList() {
     axios.get("http://localhost:3001/phones").then(function (response) {
       setPhones(response.data.products);
     });
-  }, [phones]);
+  }, []);
 
   useEffect(() => {
     localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setShowButtons(true) : setShowButtons(false);
