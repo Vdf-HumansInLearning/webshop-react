@@ -71,15 +71,21 @@ function StorePage() {
     });
   }
 
+  let isAdmin = false;
+  
+  localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? isAdmin = true : isAdmin = false;
+
   return (
     <>
       <NavbarComponent />
       <PhoneList filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
-      <div className="d-flex justify-content-center mb-5 mt-5">
+      { isAdmin &&
+        <div className="d-flex justify-content-center mb-5 mt-5">
         <Button variant="danger" onClick={() => setAddModalShow(true)}>
           Add Phone
         </Button>
-      </div>
+        </div>
+      } 
       <AddPhoneModal
         show={addModalShow}
         onHide={() => setAddModalShow(false)}

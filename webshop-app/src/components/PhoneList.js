@@ -3,6 +3,10 @@ import Filters from "./Filters";
 
 function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones}) {
 
+  useEffect(() => {
+    localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setShowButtons(true) : setShowButtons(false);
+  });
+
   return (
     <>
       <Filters
@@ -28,6 +32,7 @@ function PhoneList({handleChange, handleReset, filterValues, filters, phones, se
               quantity={item.quantity}
               rating={item.rating}
               getPhones={getPhones}
+              showButtons={showButtons}
             />
           ))}
         </div>
