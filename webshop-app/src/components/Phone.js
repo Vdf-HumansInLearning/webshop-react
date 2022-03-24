@@ -14,6 +14,7 @@ function Phone({
   rating,
   discount,
   date,
+  showButtons
 }) {
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
@@ -46,19 +47,21 @@ function Phone({
         onHide={() => setEditModalShow(false)}
       />
       <div className="phone-card col-lg-3 col-md-4 col-sm-6 col-12 g-3">
-        <div className="action-buttons d-flex justify-content-end" id={id}>
-          <button className="edit-btn" onClick={() => setEditModalShow(true)}>
-            Edit
-          </button>
-          <button
-            className="delete-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#confirm-delete"
-            onClick={() => setDeleteModalShow(true)}
-          >
-            Delete
-          </button>
-        </div>
+        {showButtons && 
+          <div className="action-buttons d-flex justify-content-end" id={id}>
+            <button className="edit-btn" onClick={() => setEditModalShow(true)}>
+              Edit
+            </button>
+            <button
+              className="delete-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#confirm-delete"
+              onClick={() => setDeleteModalShow(true)}
+            >
+              Delete
+            </button>
+          </div>
+        }  
         <div className="phone-img d-flex justify-content-center align-items-center">
           <img src={"images/" + image} alt="Phone placeholder" />
         </div>

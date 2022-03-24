@@ -15,6 +15,7 @@ function PhoneList() {
     search: "",
     sort: "none",
   });
+  const [showButtons, setShowButtons] = useState(false);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -56,6 +57,10 @@ function PhoneList() {
     });
   }, [phones]);
 
+  useEffect(() => {
+    localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setShowButtons(true) : setShowButtons(false);
+  });
+
   const handleReset = () => {
     setFilters({
       ...filters,
@@ -91,6 +96,7 @@ function PhoneList() {
               price={item.price}
               quantity={item.quantity}
               rating={item.rating}
+              showButtons={showButtons}
             />
           ))}
         </div>
