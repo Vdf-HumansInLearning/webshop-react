@@ -68,12 +68,14 @@ function Phone({
           <p>from</p>
           {discount > 0 ? (
             <h5>
-              Price : <span className="discounted">{price}</span>
-              <span className="price">{price - discount}</span>RON
+              Price: 
+              <span> </span> 
+              <span className="discounted">{price}</span>
+              <span className="price"> {price - discount}</span> RON
             </h5>
           ) : (
             <h5>
-              Price : <span className="price">{price}</span>RON
+              Price: <span className="price">{price}</span> RON
             </h5>
           )}
 

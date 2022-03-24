@@ -5,22 +5,6 @@ body {
   overflow-x: hidden;
 }
 
-/* #container ul{
-    list-style-type: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill,300px);
-    justify-content: space-around;
-    text-align: center;
-    padding: 0;
-
-}
-
-#container ul li{
-    border:1px solid black;
-    margin-top: 20px;
-    margin-left:10px;
-} */
-
 .action-buttons {
   padding: 5px 15px;
 }
@@ -127,7 +111,7 @@ label {
 }
 
 .discounted {
-  text-decoration: line-through;
+  text-decoration: line-through 2px red;
 }
 
 .checked {
