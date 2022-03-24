@@ -71,14 +71,15 @@ function StorePage() {
     });
   }
 
-  let isAdmin = false;
-  
-  localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? isAdmin = true : isAdmin = false;
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setIsAdmin(true) : setIsAdmin(false);
+  },[]);
 
   return (
     <>
-      <NavbarComponent />
-      <PhoneList filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
+      <NavbarComponent isAdmin={isAdmin} setIsAdmin={setIsAdmin}/>
+      <PhoneList isAdmin={isAdmin} filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
       { isAdmin &&
         <div className="d-flex justify-content-center mb-5 mt-5">
         <Button variant="danger" onClick={() => setAddModalShow(true)}>

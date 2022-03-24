@@ -1,11 +1,9 @@
+import { useEffect, useState } from "react";
 import Phone from "./Phone";
 import Filters from "./Filters";
 
-function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones}) {
+function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones, isAdmin}) {
 
-  useEffect(() => {
-    localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setShowButtons(true) : setShowButtons(false);
-  });
 
   return (
     <>
@@ -32,7 +30,7 @@ function PhoneList({handleChange, handleReset, filterValues, filters, phones, se
               quantity={item.quantity}
               rating={item.rating}
               getPhones={getPhones}
-              showButtons={showButtons}
+              isAdmin={isAdmin}
             />
           ))}
         </div>

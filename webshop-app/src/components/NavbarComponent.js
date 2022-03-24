@@ -25,6 +25,7 @@ function NavbarComponent(props) {
   function handleLogout() {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_role");
+    props.setIsAdmin(false);
     setShow(true);
   }
 

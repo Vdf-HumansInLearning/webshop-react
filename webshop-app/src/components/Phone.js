@@ -15,7 +15,7 @@ function Phone({
   discount,
   date,
   getPhones,
-  showButtons
+  isAdmin
 }) {
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
@@ -53,7 +53,7 @@ function Phone({
         onHide={() => setEditModalShow(false)}
       />
       <div className="phone-card col-lg-3 col-md-4 col-sm-6 col-12 g-3">
-        {showButtons && 
+        {isAdmin && 
           <div className="action-buttons d-flex justify-content-end" id={id}>
             <button className="edit-btn" onClick={() => setEditModalShow(true)}>
               Edit
