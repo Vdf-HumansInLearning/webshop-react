@@ -14,6 +14,7 @@ function Phone({
   rating,
   discount,
   date,
+  getPhones,
   showButtons
 }) {
   const [editModalShow, setEditModalShow] = useState(false);
@@ -23,6 +24,10 @@ function Phone({
     console.log(id);
     fetch("http://localhost:3001/phones/" + id, {
       method: "DELETE",
+    }).then((data) => {
+      if (data.status === 200) {
+        getPhones();
+      }
     });
   };
   return (
@@ -44,6 +49,7 @@ function Phone({
         rating={rating}
         image={image}
         show={editModalShow}
+        getPhones={getPhones}
         onHide={() => setEditModalShow(false)}
       />
       <div className="phone-card col-lg-3 col-md-4 col-sm-6 col-12 g-3">

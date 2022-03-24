@@ -1,76 +1,11 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import Phone from "./Phone";
 import Filters from "./Filters";
 
-function PhoneList() {
-  const [phones, setPhones] = useState([]);
-  const [filterValues, setFilterValues] = useState(null);
-  const [filters, setFilters] = useState({
-    brand: [],
-    price_range: "",
-    os: [],
-    minimum_rating: "",
-    stock_yes: null,
-    search: "",
-    sort: "none",
-  });
-  const [showButtons, setShowButtons] = useState(false);
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const isChecked = event.target.checked;
-    if (name === "price_range") {
-      setFilters({ ...filters, [name]: event.target.value });
-    } else if (name === "brand" || name === "os") {
-      if (isChecked) {
-        setFilters({
-          ...filters,
-          [name]: [...filters[name], event.target.value],
-        });
-      } else {
-        let index = filters[name].indexOf(event.target.value);
-        filters[name].splice(index, 1);
-        setFilters({ ...filters, [name]: filters[name] });
-      }
-    } else if (name === "stock_yes") {
-      if (isChecked) {
-        setFilters({ ...filters, [name]: event.target.value });
-      } else {
-        setFilters({ ...filters, stock_yes: null });
-      }
-    }
-  };
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/phones", { params: filters })
-      .then(function (response) {
-        setPhones(response.data.products);
-        setFilterValues(response.data.filters);
-      });
-  }, [filters]);
-
-  useEffect(() => {
-    axios.get("http://localhost:3001/phones").then(function (response) {
-      setPhones(response.data.products);
-    });
-  }, []);
+function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones}) {
 
   useEffect(() => {
     localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setShowButtons(true) : setShowButtons(false);
   });
-
-  const handleReset = () => {
-    setFilters({
-      ...filters,
-      brand: [],
-      price_range: "",
-      os: [],
-      minimum_rating: "",
-      stock_yes: null,
-    });
-  };
 
   return (
     <>
@@ -96,6 +31,7 @@ function PhoneList() {
               price={item.price}
               quantity={item.quantity}
               rating={item.rating}
+              getPhones={getPhones}
               showButtons={showButtons}
             />
           ))}

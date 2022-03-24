@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-function DeletePhoneModal({ onHide, deletePhone, show }) {
+function DeletePhoneModal({ onHide, deletePhone, show}) {
   return (
     <Modal
       show={show}
       onHide={onHide}
-      size="m"
+      size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
