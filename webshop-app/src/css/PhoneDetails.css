@@ -1,0 +1,19 @@
+.phone-details-img {
+    height: 20rem;
+    padding-left: 30%;
+}
+
+.details-title {
+    text-align: center;
+}
+
+.details-footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    margin: auto;
+}
+
+.container-details {
+    padding-top: 5rem;
+}

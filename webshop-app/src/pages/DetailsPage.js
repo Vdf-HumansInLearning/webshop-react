@@ -4,6 +4,8 @@ import axios from "axios";
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 
+import '../css/PhoneDetails.css';
+
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
   useEffect(() => {
@@ -46,17 +48,18 @@ function DetailsPage() {
       {phone ? (
         <div className="container pt-5" id="container">
           <div className="title mt-3">
-            <h4 className="title" id="brand">
+            <h4 className="title details-title" id="brand">
               {phone.brand}{" "}
               <span className="subtitle text-danger" id="name">
                 {phone.name}
               </span>
             </h4>
           </div>
-          <div className="container mt-3">
+          <div className="container container-details mt-3">
             <div className="row">
-              <div className="phone-img col-sm-6 col-12" id="phone-img">
+              <div className="col-sm-6 col-12" id="phone-img">
                 <img
+                  className="phone-details-img"
                   src={"/images/" + phone.image}
                   alt="Phone placeholder"
                 ></img>
@@ -126,7 +129,9 @@ function DetailsPage() {
       ) : (
         <></>
       )}
-      <FooterComponent />
+      <div className="details-footer">
+       <FooterComponent />
+      </div>
     </>
   );
 }
