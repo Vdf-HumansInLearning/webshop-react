@@ -1,8 +1,83 @@
-import { Modal } from "react-bootstrap";
+import { Form, Modal, Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { useState } from "react";
 import "../css/Modal.css";
 
 function EditProfileModal(props) {
+  const [validated, setValidated] = useState(false);
+  const [profileToEdit, setProfileToEdit] = useState({
+    name: props.name,
+    username: props.username,
+    email: props.email,
+    password: props.password,
+    role: props.role,
+    street: props.street,
+    suite: props.suite,
+    city: props.city,
+    zipcode: props.zipcode,
+    phone: props.phone,
+  });
+
+  const handleChangeEditProfile = (e) => {
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    setProfileToEdit({
+      ...profileToEdit,
+      [name]: value,
+    });
+  };
+
+  const editProfile = (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+    if (form.checkValidity()) {
+      console.log(profileToEdit);
+      console.log({
+        name: profileToEdit.name,
+        username: profileToEdit.username,
+        email: profileToEdit.email,
+        password: profileToEdit.password,
+        role: profileToEdit.role,
+        address: {
+          street: profileToEdit.street,
+          suite: profileToEdit.suite,
+          city: profileToEdit.city,
+          zipcode: profileToEdit.zipcode,
+        },
+        phone: profileToEdit.phone,
+      });
+      fetch("http://localhost:3001/users/" + props.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: profileToEdit.name,
+          username: profileToEdit.username,
+          email: profileToEdit.email,
+          password: profileToEdit.password,
+          role: profileToEdit.role,
+          address: {
+            street: profileToEdit.street,
+            suite: profileToEdit.suite,
+            city: profileToEdit.city,
+            zipcode: profileToEdit.zipcode,
+          },
+          phone: profileToEdit.phone,
+        }),
+      }).then((data) => {
+        if (data.status === 200) {
+          console.log("profile edited");
+          props.onHide();
+        } else {
+          console.log("error");
+        }
+      });
+    }
+    setValidated(true);
+  };
+
   return (
     <Modal
       {...props}
@@ -20,139 +95,144 @@ function EditProfileModal(props) {
           id="edit-user-container"
           className="edit-user d-flex justify-content-center flex-column align-items-center text-left"
         >
-          <form
+          <Form
+            onSubmit={(e) => editProfile(e)}
             className="edit-user-form"
-            id="edit-user-form"
-            action="/users/<%= user.id %>"
+            noValidate
+            validated={validated}
           >
-            <h5 className="mb-1">Address</h5>
-            <div className="input-group mb-3">
-              <span
-                className="input-group-text"
-                for="edit-street"
-                id="basic-addon1"
-              >
+            <h4 className="mb-3 text-center">Address</h4>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="validationCustom01"
+            >
+              <Form.Label column sm="3">
                 Street*
-              </span>
-              <input
-                value={props.street}
-                id="edit-street"
-                name="street"
-                type="text"
-                className="form-control"
-                placeholder="ex. : Kulas Light"
-                aria-label="ex. : Kulas Light"
-                aria-describedby="basic-addon1"
-                required
-              ></input>
-            </div>
-            <div className="invalid-feedback mb-2" id="invalid-street-edit">
-              Invalid street name.
-            </div>
-            <div className="input-group mb-3">
-              <span
-                className="input-group-text"
-                for="edit-suite"
-                id="basic-addon1"
-              >
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="text"
+                  name="street"
+                  defaultValue={props.street}
+                  onChange={handleChangeEditProfile}
+                  placeholder="ex. : Kulas Light"
+                  aria-label="ex. : Kulas Light"
+                  pattern="(^[A-Za-z]{2,30})([ ]{0,1})([A-Za-z]{2,30})"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Invalid street name.
+                </Form.Control.Feedback>
+              </Col>
+            </Form.Group>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="validationCustom02"
+            >
+              <Form.Label column sm="3">
                 Suite*
-              </span>
-              <input
-                value={props.suite}
-                id="edit-suite"
-                name="suite"
-                type="text"
-                className="form-control"
-                placeholder="ex. : Apt. 556"
-                aria-label="ex. : Apt. 556"
-                aria-describedby="basic-addon1"
-                required
-              ></input>
-            </div>
-            <div className="invalid-feedback mb-2" id="invalid-suite-edit">
-              Invalid suite format.
-            </div>
-            <div className="input-group mb-3">
-              <span
-                className="input-group-text"
-                for="edit-city"
-                id="basic-addon1"
-              >
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="text"
+                  name="suite"
+                  defaultValue={props.suite}
+                  onChange={handleChangeEditProfile}
+                  placeholder="ex. : Apt. 556"
+                  aria-label="ex. : Apt. 556"
+                  pattern="^[.0-9a-zA-Z\s,-]+$"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Invalid suite format.
+                </Form.Control.Feedback>
+              </Col>
+            </Form.Group>
+
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="validationCustom03"
+            >
+              <Form.Label column sm="3">
                 City*
-              </span>
-              <input
-                value={props.city}
-                id="edit-city"
-                name="city"
-                type="text"
-                className="form-control"
-                placeholder="ex. : Gwenborough"
-                aria-label="ex. : Gwenborough"
-                aria-describedby="basic-addon1"
-                required
-              ></input>
-            </div>
-            <div className="invalid-feedback mb-2" id="invalid-city-edit">
-              Invalid city name.
-            </div>
-            <div className="input-group mb-3">
-              <span
-                className="input-group-text"
-                for="edit-zip"
-                id="basic-addon1"
-              >
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="text"
+                  name="city"
+                  defaultValue={props.city}
+                  onChange={handleChangeEditProfile}
+                  placeholder="ex. : Gwenborough"
+                  aria-label="ex. : Gwenborough"
+                  pattern="(^[A-Za-z]{2,30})([ ]{0,1})([A-Za-z]{2,30})"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Invalid city name.
+                </Form.Control.Feedback>
+              </Col>
+            </Form.Group>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="validationCustom04"
+            >
+              <Form.Label column sm="3">
                 Zip code*
-              </span>
-              <input
-                value={props.zipcode}
-                id="edit-zip"
-                name="zip"
-                type="text"
-                className="form-control"
-                placeholder="ex. : 929987"
-                aria-label="ex. : 929987"
-                aria-describedby="basic-addon1"
-                required
-              ></input>
-            </div>
-            <div className="invalid-feedback mb-2" id="invalid-zip-edit">
-              Invalid zip code format.
-            </div>
-            <h5 className="mb-1">Phone</h5>
-            <div className="input-group mb-3">
-              <span
-                className="input-group-text"
-                for="edit-phone"
-                id="basic-addon1"
-              >
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="text"
+                  name="zipcode"
+                  defaultValue={props.zipcode}
+                  onChange={handleChangeEditProfile}
+                  placeholder="ex. : 929987"
+                  aria-label="ex. : 929987"
+                  pattern="^[0-9]{6}$"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Invalid zip code format.
+                </Form.Control.Feedback>
+              </Col>
+            </Form.Group>
+
+            <h4 className="mb-3 text-center">Phone</h4>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="validationCustom05"
+            >
+              <Form.Label column sm="3">
                 Phone number*
-              </span>
-              <input
-                value={props.phone}
-                id="edit-phone"
-                name="phone"
-                type="text"
-                className="form-control"
-                placeholder="ex. : 0712345678"
-                aria-label="ex. : 0712345678"
-                aria-describedby="basic-addon1"
-              ></input>
-            </div>
-            <div className="invalid-feedback mb-2" id="invalid-phone-edit">
-              Invalid phone number format.
-            </div>
-          </form>
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="text"
+                  name="zipcode"
+                  defaultValue={props.phone}
+                  onChange={handleChangeEditProfile}
+                  placeholder="ex. : 0712345678"
+                  aria-label="ex. : 0712345678"
+                  pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Invalid phone number format.
+                </Form.Control.Feedback>
+              </Col>
+            </Form.Group>
+          </Form>
         </div>
       </Modal.Body>
       <Modal.Footer>
         <div className="add-new-buttons d-flex justify-content-between">
-          <button
-            type="submit"
-            id="edit-phone"
-            className="btn btn-danger text-center"
-          >
+          <Button variant="danger" onClick={editProfile}>
             Save changes
-          </button>
+          </Button>
           <Button onClick={props.onHide}>Cancel</Button>
         </div>
       </Modal.Footer>

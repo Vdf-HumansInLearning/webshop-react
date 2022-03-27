@@ -95,6 +95,12 @@ function ProfilePage() {
               Edit Profile
             </Button>
             <EditProfileModal
+              id={user_id}
+              name={user.name}
+              username={user.username}
+              email={user.email}
+              password={user.password}
+              role={user.role}
               street={user.address.street}
               suite={user.address.suite}
               city={user.address.city}
