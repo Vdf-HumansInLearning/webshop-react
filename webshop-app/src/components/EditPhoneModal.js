@@ -38,7 +38,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
         },
         body: JSON.stringify(phoneToEdit),
       }).then((data) => {
-        if (data.status === 201) {
+        if (data.status === 200) {
           console.log("phone edited");
           getPhones();
           onHide();

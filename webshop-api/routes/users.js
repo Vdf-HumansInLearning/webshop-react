@@ -63,7 +63,7 @@ router.put("/:id", function (req, res, next) {
         if (err) {
           throw err;
         } else {
-          res.send({ message: "Successfully updated" });
+          res.status(201).send({ message: "Successfully updated" });
         }
       });
     } else {
