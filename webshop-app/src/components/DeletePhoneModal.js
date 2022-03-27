@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-function DeletePhoneModal({ onHide, deletePhone, show}) {
+function DeletePhoneModal({ onHide, deletePhone, show, quantity}) {
   return (
     <Modal
       show={show}

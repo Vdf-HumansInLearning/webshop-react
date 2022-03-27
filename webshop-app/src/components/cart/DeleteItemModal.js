@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap";
-function DeleteItemModal(props) {
+function DeleteItemModal({deleteCartItemAndModalClose, ...props}) {
   return (
     <Modal
       {...props}
@@ -14,7 +14,7 @@ function DeleteItemModal(props) {
         <Button variant="secondary" onClick={props.onHide}>
           Close
         </Button>
-        <Button variant="danger" onClick={props.deleteCartItem}>
+        <Button variant="danger" onClick={deleteCartItemAndModalClose}>
           Delete item
         </Button>
       </Modal.Footer>

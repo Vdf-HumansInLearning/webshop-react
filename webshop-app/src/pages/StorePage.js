@@ -12,6 +12,7 @@ function StorePage() {
   const [addModalShow, setAddModalShow] = useState(false);
   const [phones, setPhones] = useState([]);
   const [filterValues, setFilterValues] = useState(null);
+  const [cartItemsNumber, setCartItemsNumber] = useState(0);
   const [filters, setFilters] = useState({
     brand: [],
     price_range: "",
@@ -48,6 +49,17 @@ function StorePage() {
   };
 
   useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("items"));
+    let counter = 0;
+    if(cartItems) {
+      for(let i=0; i<cartItems.length; i++){
+        counter = counter + cartItems[i].quantity;
+      }
+      setCartItemsNumber(counter);
+    }
+  }, []);
+
+  useEffect(() => {
     getPhones();
   }, [filters]);
 
@@ -78,8 +90,8 @@ function StorePage() {
 
   return (
     <>
-      <NavbarComponent isAdmin={isAdmin} setIsAdmin={setIsAdmin}/>
-      <PhoneList isAdmin={isAdmin} filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
+      <NavbarComponent isAdmin={isAdmin} setIsAdmin={setIsAdmin} cartItemsNumber={cartItemsNumber}/>
+      <PhoneList cartItemsNumber={cartItemsNumber} setCartItemsNumber={setCartItemsNumber} isAdmin={isAdmin} filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
       { isAdmin &&
         <div className="d-flex justify-content-center mb-5 mt-5">
         <Button variant="danger" onClick={() => setAddModalShow(true)}>

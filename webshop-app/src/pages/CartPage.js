@@ -19,6 +19,7 @@ function CartPage() {
 
   const [cartItems, setCartItems] = useState([]);
   const [totalCartValue, setTotalCartValue] = useState(0);
+  const [cartItemsNumber, setCartItemsNumber] = useState(0);
 
   const [currentUser, setCurrentUser] = useState({
     id: 1,
@@ -57,6 +58,11 @@ function CartPage() {
       : "You can remove items by clicking on the trash icon.";
 
     if (condition) {
+      if(isIncrease) {
+        setCartItemsNumber(cartItemsNumber + 1);
+      } else {
+        setCartItemsNumber(cartItemsNumber - 1);
+      }
       array[cartItemIndex].quantity = isIncrease
         ? array[cartItemIndex].quantity + 1
         : array[cartItemIndex].quantity - 1;
@@ -77,11 +83,17 @@ function CartPage() {
   const deleteCartItem = (idToDelete) => {
     let array = [...cartItems];
     let foundIndex = array.findIndex((item) => item.id === idToDelete);
-    if (foundIndex) {
+    let quantity = array[foundIndex].quantity;
+    if (foundIndex !== -1) {
       array.splice(foundIndex, 1);
+      if(array.length > 0){
       const orders = array.map((item) => arrayToLocalStorage(item));
       localStorage.setItem("items", JSON.stringify(orders));
+      } else {
+        localStorage.removeItem("items");
+      }
       setCartItems(array);
+      setCartItemsNumber(cartItemsNumber - quantity);
     }
   };
 
@@ -162,17 +174,17 @@ function CartPage() {
       //set address fields
       getUser(userId);
       //add a value to each cartItem
-      const orders = orderList.map((item, index) => ({
+      const orders = orderList.map((item) => ({
         ...item,
         value: item.price * item.quantity,
-        id: index,
+        id: item.id,
       }));
       setCartItems(orders);
     } else if (orderList) {
-      const orders = orderList.map((item, index) => ({
+      const orders = orderList.map((item) => ({
         ...item,
         value: item.price * item.quantity,
-        id: index,
+        id: item.id,
       }));
       setCartItems(orders);
       let sum = 0;
@@ -181,13 +193,22 @@ function CartPage() {
       });
       setTotalCartValue(sum);
     }
+
+    if(orderList) {
+      let counter = 0;
+      for(let i=0; i<orderList.length; i++){
+        counter = counter + orderList[i].quantity;
+      }
+      setCartItemsNumber(counter);
+    }
+
   }, []);
 
   //no items in cart and not logged in
-  if (!(orderList && isLoggedIn)) {
+  if (!(orderList)) {
     return (
       <>
-        <NavbarComponent />
+        <NavbarComponent cartItemsNumber={cartItemsNumber}/>
         <Container className="mt-5 pt-5 text-center">
           <h4>Your cart is empty</h4>
 
@@ -198,7 +219,6 @@ function CartPage() {
     );
   }
 
-  //items in cart and logged in
   const orderSummary = (
     <OrderSummary
       cartItems={cartItems}
@@ -208,6 +228,20 @@ function CartPage() {
     />
   );
 
+  //items in cart and not logged in
+  if (orderList && !isLoggedIn) {
+    return (
+      <>
+      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
+      <Container className="mt-5 pt-5 text-center">
+        {orderSummary}
+      </Container>
+      <FooterComponent />
+    </>
+    );
+  }
+
+  //items in cart and logged in
   const address = (
     <CustomerAddress
       placeOrder={placeOrder}
@@ -219,7 +253,7 @@ function CartPage() {
 
   return (
     <>
-      <NavbarComponent />
+      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
       <Container className="mt-5 pt-5 text-center">
         {orderSummary}
         {orderList && isLoggedIn && address}

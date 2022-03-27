@@ -7,7 +7,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Badge from "react-bootstrap/Badge";
 import { LinkContainer } from "react-router-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function NavbarComponent(props) {
   const [show, setShow] = useState(false);
@@ -62,7 +62,7 @@ function NavbarComponent(props) {
                 <Nav>
                   <LinkContainer to="/cart">
                     <Button variant="link" className="nav-item">
-                      Cart <Badge bg="secondary">0</Badge>{" "}
+                      Cart <Badge bg="secondary">{props.cartItemsNumber}</Badge>{" "}
                     </Button>
                   </LinkContainer>
                   {loggedIn ? (

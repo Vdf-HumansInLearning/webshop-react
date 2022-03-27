@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import '../css/PhoneDetails.css';
 
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
+  const [cartItemsNumber, setCartItemsNumber] = useState(0);
+  let rating = [1,2,3,4,5]
+
   useEffect(() => {
     const afterLastSlash = window.location.pathname.substring(
       window.location.pathname.lastIndexOf("/") + 1
@@ -17,34 +21,42 @@ function DetailsPage() {
       .then(function (response) {
         setPhone(response.data);
       });
+      const cartItems = JSON.parse(localStorage.getItem("items"));
+      let counter = 0;
+      if(cartItems) {
+        for(let i=0; i<cartItems.length; i++){
+          counter = counter + cartItems[i].quantity;
+        }
+        setCartItemsNumber(counter);
+      }
   }, []);
 
-  // function getRating(rating) {
-  //   let elements = ["Rating: "];
-
-  //   for (let i = 1; i <= 5; i++) {
-  //     Math.trunc(rating) >= i
-  //       ? elements.push(
-  //           React.createElement("span", { className: "fa fa-star checked" })
-  //         )
-  //       : // <span className="fa fa-star checked"></span>
-  //         elements.push(
-  //           React.createElement("span", { className: "fa fa-star unchecked" })
-  //         );
-  //     // <span className="fa fa-star unchecked"></span>
-  //   }
-
-  //   rating > 0
-  //     ? elements.push(React.createElement("span", rating))
-  //     : elements.push(React.createElement("span", "(-)"));
-
-  //   let starRating = React.createElement("h5", elements);
-  //   return starRating;
-  // }
+  const handleAddToCart = (id) => {
+    let cartItems = JSON.parse(localStorage.getItem("items"));
+    if(cartItems){
+      let count = 0;
+      for (let i = 0; i < cartItems.length; i++) {
+          if (cartItems[i].id === id) {
+              cartItems[i].quantity += 1;
+              count += 1;
+          }
+      }
+      if (count < 1) {
+          cartItems.push({ id: id, name: `${phone.brand} ${phone.name}`, price: phone.price, quantity: 1 });
+      }
+      setCartItemsNumber(cartItemsNumber + 1);
+      localStorage.setItem("items", JSON.stringify(cartItems));
+    } else {
+        const items = [{ id: id, name: `${phone.brand} ${phone.name}`, price: phone.price, quantity: 1 }];
+        localStorage.setItem("items", JSON.stringify(items));
+        setCartItemsNumber(cartItemsNumber + 1);
+    }
+    
+  }
 
   return (
     <>
-      <NavbarComponent />
+      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
       {phone ? (
         <div className="container pt-5" id="container">
           <div className="title mt-3">
@@ -79,14 +91,21 @@ function DetailsPage() {
                   </h5>
                 )}
                 <div id="rating">
-                  {/* <h5>
-                   Rating :{}
+                  <h5>
+                   Rating :
+                   {rating.map((item) => {
+                     if(phone.rating >= item){
+                      return <FaStar key={item}/>;
+                     } else {
+                      return <FaRegStar key={item}/>;
+                     }
+                   })}
                    {phone.rating > 0 ? (
-                     <span> (phone.rating)</span>
+                     <span> ({phone.rating})</span>
                    ) : (
                      <span> (-)</span>
                    )}
-                </h5> */}
+                </h5>
                 </div>
                 <h5>
                   Operating system :{" "}
@@ -110,6 +129,7 @@ function DetailsPage() {
                   <button
                     id="add-to-cart"
                     className="text-center btn btn-outline-danger mt-3"
+                    onClick={() => handleAddToCart(phone.id)}
                   >
                     Add to cart
                   </button>
@@ -117,6 +137,7 @@ function DetailsPage() {
                   <button
                     id="add-to-cart"
                     className="text-center btn btn-outline-danger mt-3"
+                    onClick={() => handleAddToCart(phone.id)}
                     disabled
                   >
                     Add to cart

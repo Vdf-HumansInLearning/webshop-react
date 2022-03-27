@@ -45,7 +45,7 @@ function OrderSummary({
         </div>
       </div>
       <DeleteItemModal
-        deleteCartItem={deleteCartItemAndModalClose}
+        deleteCartItemAndModalClose={deleteCartItemAndModalClose}
         show={modalShow}
         onHide={() => setModalShow(false)}
       />

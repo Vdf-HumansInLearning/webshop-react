@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [cartItemsNumber, setCartItemsNumber] = useState(0);
 
   let loggedIn = false;
   let idUser = localStorage.getItem("user_id");
@@ -17,6 +18,15 @@ function OrdersPage() {
   }
 
   useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("items"));
+    let counter = 0;
+    if(cartItems) {
+      for(let i=0; i<cartItems.length; i++){
+        counter = counter + cartItems[i].quantity;
+      }
+      setCartItemsNumber(counter);
+    }
+
     fetch(`http://localhost:3001/orders/user/${idUser}`)
       .then((response) => response.json())
       .then((data) => setOrders(data));
@@ -25,7 +35,7 @@ function OrdersPage() {
   console.log(orders);
   return (
     <>
-      <NavbarComponent />
+      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
       {loggedIn && orders.length > 0 ? (
         <main className="order-main">
           {orders.map((order) => (

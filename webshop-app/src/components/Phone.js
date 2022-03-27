@@ -1,6 +1,8 @@
 import React from "react";
 import EditPhoneModal from "./EditPhoneModal";
 import DeletePhoneModal from "./DeletePhoneModal";
+import Button from "react-bootstrap/esm/Button";
+import { LinkContainer } from "react-router-bootstrap";
 import { useState } from "react";
 
 function Phone({
@@ -15,10 +17,13 @@ function Phone({
   discount,
   date,
   getPhones,
-  isAdmin
+  isAdmin,
+  cartItemsNumber,
+  setCartItemsNumber
 }) {
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
+
 
   const deletePhone = () => {
     console.log(id);
@@ -30,6 +35,30 @@ function Phone({
       }
     });
   };
+
+  const handleAddToCart = (id) => {
+    let cartItems = JSON.parse(localStorage.getItem("items"));
+    if(cartItems){
+      let count = 0;
+      for (let i = 0; i < cartItems.length; i++) {
+          if (cartItems[i].id === id) {
+              cartItems[i].quantity += 1;
+              count += 1;
+          }
+      }
+      if (count < 1) {
+          cartItems.push({ id: id, name: `${brand} ${name}`, price: price, quantity: 1 });
+      }
+      setCartItemsNumber(cartItemsNumber + 1);
+      localStorage.setItem("items", JSON.stringify(cartItems));
+    } else {
+        const items = [{ id: id, name: `${brand} ${name}`, price: price, quantity: 1 }];
+        localStorage.setItem("items", JSON.stringify(items));
+        setCartItemsNumber(cartItemsNumber + 1);
+    }
+    
+  }
+
   return (
     <>
       <DeletePhoneModal
@@ -87,17 +116,15 @@ function Phone({
               Price: <span className="price">{price}</span> RON
             </h5>
           )}
-
-          <a href={"/phones/" + id} className="phone-link mb-2">
-            <button className="btn btn-danger">See product details &gt;</button>
-          </a>
+          <LinkContainer to={"/phones/" + id}><Button variant="danger">See product details &gt;</Button></LinkContainer>
           {quantity > 0 ? (
-            <button className="add-to-cart text-center btn btn-danger mt-2">
+            <button className="add-to-cart text-center btn btn-danger mt-2" onClick={() => handleAddToCart(id)}>
               Add to cart
             </button>
           ) : (
             <button
               className="add-to-cart text-center btn btn-danger mt-2"
+              onClick={() => handleAddToCart(id)}
               disabled
             >
               Add to cart

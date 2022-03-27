@@ -20,7 +20,6 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
   const [validated, setValidated] = useState(false);
 
   const handleChangeEditPhone = (e) => {
-    console.log(e);
     const target = e.target;
     const value = target.value;
     const name = target.name;
@@ -91,6 +90,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   onChange={handleChangeEditPhone}
                   placeholder="ex. : Samsung"
                   aria-label="ex. : Samsung"
+                  pattern="^[a-zA-Z]{1,30}$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -115,6 +115,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   placeholder="ex. : Galaxy S21"
                   aria-label="ex. : Galaxy S21"
                   aria-describedby="basic-addon1"
+                  pattern="(^[A-Za-z0-9]{1,16})([ ]{0,1})([A-Za-z0-9]{1,16})?([ ]{0,1})?([A-Za-z0-9]{1,16})"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -139,6 +140,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   placeholder="ex. : Android, iOS"
                   aria-label="ex. : Android, iOS"
                   aria-describedby="basic-addon1"
+                  pattern="^[a-zA-Z]{1,30}$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -163,6 +165,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   placeholder="ex. : 899"
                   aria-label="ex. : 899"
                   aria-describedby="basic-addon1"
+                  pattern="^\d+$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -186,6 +189,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   onChange={handleChangeEditPhone}
                   placeholder="ex. : 250"
                   aria-label="ex. : 250"
+                  pattern="^\d+$"
                   aria-describedby="basic-addon1"
                 />
                 <Form.Control.Feedback type="invalid">
@@ -210,6 +214,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   placeholder="ex. : 100"
                   aria-label="ex. : 100"
                   aria-describedby="basic-addon1"
+                  pattern="^\d+$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -234,6 +239,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   placeholder="ex. : 2021-08-13"
                   aria-label="ex. : 2021-08-13"
                   aria-describedby="basic-addon1"
+                  pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -258,6 +264,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   className="form-control"
                   placeholder="ex. : 4.5"
                   aria-label="ex. : 4.5"
+                  pattern="^[0-5]"
                 />
                 <Form.Control.Feedback type="invalid">
                   Invalid rating format.

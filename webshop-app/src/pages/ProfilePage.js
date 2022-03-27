@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 function ProfilePage() {
   const [modalShow, setModalShow] = useState(false);
   const [user, setUser] = useState(null);
+  const [cartItemsNumber, setCartItemsNumber] = useState(0);
 
   let logged_in = false;
   let user_id = localStorage.getItem("user_id");
@@ -23,11 +24,20 @@ function ProfilePage() {
           setUser(data);
         });
     }
+
+    const cartItems = JSON.parse(localStorage.getItem("items"));
+    let counter = 0;
+    if (cartItems) {
+      for (let i = 0; i < cartItems.length; i++) {
+        counter = counter + cartItems[i].quantity;
+      }
+      setCartItemsNumber(counter);
+    }
   }, []);
 
   return (
     <>
-      <NavbarComponent />
+      <NavbarComponent cartItemsNumber={cartItemsNumber} />
       <div
         className="container d-flex flex-column align-items-center mt-5 pt-5"
         id="container"

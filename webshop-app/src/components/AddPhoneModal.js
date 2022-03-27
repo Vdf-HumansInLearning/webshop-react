@@ -20,7 +20,6 @@ function AddPhoneModal({getPhones, ...props}) {
   const [validated, setValidated] = useState(false);
 
   const handleChangeAddPhone = (e) => {
-    console.log(e);
     const target = e.target;
     const value = target.value;
     const name = target.name;
@@ -30,7 +29,6 @@ function AddPhoneModal({getPhones, ...props}) {
   const addPhone = (e) => {
     const form = e.currentTarget;
     e.preventDefault();
-    console.log(form.checkValidity());
     if (form.checkValidity()) {
       fetch("http://localhost:3001/phones", {
         method: "POST",
@@ -40,8 +38,8 @@ function AddPhoneModal({getPhones, ...props}) {
         body: JSON.stringify(phoneToAdd),
       }).then((data) => {
         if (data.status === 200) {
-          console.log("phone added");
-          props.getPhones();
+          getPhones();
+          props.onHide();
         } else {
           console.log("error");
         }
@@ -87,6 +85,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   onChange={handleChangeAddPhone}
                   placeholder="ex. : Samsung"
                   aria-label="ex. : Samsung"
+                  pattern="^[a-zA-Z]{1,30}$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -111,6 +110,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   placeholder="ex. : Galaxy S21"
                   aria-label="ex. : Galaxy S21"
                   aria-describedby="basic-addon1"
+                  pattern="(^[A-Za-z0-9]{1,16})([ ]{0,1})([A-Za-z0-9]{1,16})?([ ]{0,1})?([A-Za-z0-9]{1,16})"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -135,6 +135,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   placeholder="ex. : Android, iOS"
                   aria-label="ex. : Android, iOS"
                   aria-describedby="basic-addon1"
+                  pattern="^[a-zA-Z]{1,30}$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -159,6 +160,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   placeholder="ex. : 899"
                   aria-label="ex. : 899"
                   aria-describedby="basic-addon1"
+                  pattern="^\d+$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -182,6 +184,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   onChange={handleChangeAddPhone}
                   placeholder="ex. : 250"
                   aria-label="ex. : 250"
+                  pattern="^\d+$"
                   aria-describedby="basic-addon1"
                 />
                 <Form.Control.Feedback type="invalid">
@@ -206,6 +209,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   placeholder="ex. : 100"
                   aria-label="ex. : 100"
                   aria-describedby="basic-addon1"
+                  pattern="^\d+$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -230,6 +234,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   placeholder="ex. : 2021-08-13"
                   aria-label="ex. : 2021-08-13"
                   aria-describedby="basic-addon1"
+                  pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -254,6 +259,7 @@ function AddPhoneModal({getPhones, ...props}) {
                   className="form-control"
                   placeholder="ex. : 4.5"
                   aria-label="ex. : 4.5"
+                  pattern="^[0-5]"
                 />
                 <Form.Control.Feedback type="invalid">
                   Invalid rating format.

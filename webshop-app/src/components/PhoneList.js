@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Phone from "./Phone";
 import Filters from "./Filters";
 
-function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones, isAdmin}) {
+function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones, isAdmin, cartItemsNumber, setCartItemsNumber}) {
 
 
   return (
@@ -31,6 +31,8 @@ function PhoneList({handleChange, handleReset, filterValues, filters, phones, se
               rating={item.rating}
               getPhones={getPhones}
               isAdmin={isAdmin}
+              cartItemsNumber={cartItemsNumber} 
+              setCartItemsNumber={setCartItemsNumber}
             />
           ))}
         </div>
