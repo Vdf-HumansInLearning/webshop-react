@@ -47,6 +47,7 @@ function LoginPage() {
       .then((data) => {
         if (!data.message) {
           setError(false);
+          localStorage.setItem("user_username", data.username);
           localStorage.setItem("user_id", data.id);
           localStorage.setItem("user_role", data.role);
           setShow(true);
@@ -56,6 +57,7 @@ function LoginPage() {
         } else {
           setError(true);
           setInputs({ email: "", password: "" });
+          localStorage.removeItem("user_username");
           localStorage.removeItem("user_id");
           localStorage.removeItem("user_role");
           setShow(true);
@@ -134,7 +136,7 @@ function LoginPage() {
           </>
         )}
       </Container>
-      <FooterComponent position="absolute"/>
+      <FooterComponent position="absolute" />
       <ToastContainer className="p-3" position="top-end">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (

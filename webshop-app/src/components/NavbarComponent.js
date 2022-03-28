@@ -7,15 +7,20 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Badge from "react-bootstrap/Badge";
 import { LinkContainer } from "react-router-bootstrap";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { BsCartFill } from "react-icons/bs";
+import { FaUser } from "react-icons/fa";
+import "../css/Navbar.css";
 
 function NavbarComponent(props) {
   const [show, setShow] = useState(false);
   let loggedIn = false;
   let admin = false;
+  let username;
 
   if (localStorage.getItem("user_id")) {
     loggedIn = true;
+    username = localStorage.getItem("user_username");
   }
 
   if (localStorage.getItem("user_role") === "admin") {
@@ -23,9 +28,10 @@ function NavbarComponent(props) {
   }
 
   function handleLogout() {
+    localStorage.removeItem("user_username");
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_role");
-    if(props.setIsAdmin){
+    if (props.setIsAdmin) {
       props.setIsAdmin(false);
     }
     setShow(true);
@@ -34,9 +40,17 @@ function NavbarComponent(props) {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Container fluid>
+        <Container>
           <LinkContainer to="/">
-            <Navbar.Brand className="text-danger">WEBSTORE</Navbar.Brand>
+            <Navbar.Brand className="text-danger">
+              <img
+                className="p-1"
+                src="images/brand.png"
+                width="40"
+                height="40"
+              ></img>
+              WEBSTORE
+            </Navbar.Brand>
           </LinkContainer>
           {props.navStyle !== "simple" && (
             <>
@@ -64,12 +78,20 @@ function NavbarComponent(props) {
                 <Nav>
                   <LinkContainer to="/cart">
                     <Button variant="link" className="nav-item">
-                      Cart <Badge bg="secondary">{props.cartItemsNumber}</Badge>{" "}
+                      <BsCartFill />
+                      Cart <Badge bg="secondary">
+                        {props.cartItemsNumber}
+                      </Badge>{" "}
                     </Button>
                   </LinkContainer>
                   {loggedIn ? (
                     <Button variant="link" className="nav-item">
-                      <NavDropdown title="Account" id="basic-nav-dropdown">
+                      <FaUser />
+                      <NavDropdown
+                        title={username}
+                        id="nav-dropdown-dark-example"
+                        menuVariant="dark"
+                      >
                         <LinkContainer to="/profile">
                           <NavDropdown.Item>Profile Settings</NavDropdown.Item>
                         </LinkContainer>
