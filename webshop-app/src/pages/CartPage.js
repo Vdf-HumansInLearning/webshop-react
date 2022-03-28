@@ -214,7 +214,9 @@ function CartPage() {
 
           <Link to="/phones">Continue shopping</Link>
         </Container>
-        <FooterComponent />
+        <div className="cart-footer">
+          <FooterComponent />
+        </div>
       </>
     );
   }
@@ -236,7 +238,9 @@ function CartPage() {
       <Container className="mt-5 pt-5 text-center">
         {orderSummary}
       </Container>
-      <FooterComponent />
+      <div className="cart-footer">
+        <FooterComponent />
+      </div>
     </>
     );
   }
@@ -258,7 +262,9 @@ function CartPage() {
         {orderSummary}
         {orderList && isLoggedIn && address}
       </Container>
-      <FooterComponent />
+      <div className="cart-footer">
+        <FooterComponent />
+      </div>
     </>
   );
 }

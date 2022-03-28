@@ -99,6 +99,9 @@
   padding-bottom: 10px;
 }
 
-.footer {
-  position: inherit;
+.cart-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin: auto;
 }
