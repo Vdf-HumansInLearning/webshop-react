@@ -11,6 +11,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import { useState } from "react";
+import "../css/LoginPage.css";
 
 function LoginPage() {
   const [inputs, setInputs] = useState({ email: "", password: "" });
@@ -136,7 +137,9 @@ function LoginPage() {
           </>
         )}
       </Container>
-      <FooterComponent position="absolute" />
+      <div className="login-footer">
+        <FooterComponent />
+      </div>
       <ToastContainer className="p-3" position="top-end">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Phone from "./Phone";
 import Filters from "./Filters";
 

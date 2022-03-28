@@ -67,7 +67,7 @@ function EditProfileModal(props) {
           phone: profileToEdit.phone,
         }),
       }).then((data) => {
-        if (data.status === 200) {
+        if (data.status === 201) {
           console.log("profile edited");
           props.onHide();
         } else {
@@ -212,7 +212,7 @@ function EditProfileModal(props) {
               <Col sm="9">
                 <Form.Control
                   type="text"
-                  name="zipcode"
+                  name="phone"
                   defaultValue={props.phone}
                   onChange={handleChangeEditProfile}
                   placeholder="ex. : 0712345678"

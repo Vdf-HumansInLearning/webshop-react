@@ -52,10 +52,10 @@ router.put("/:id", function (req, res, next) {
   let user = users.find((user) => user.id == req.params.id);
 
   if (user) {
-    user.address.street = req.body.street;
-    user.address.suite = req.body.suite;
-    user.address.city = req.body.city;
-    user.address.zipcode = req.body.zipcode;
+    user.address.street = req.body.address.street;
+    user.address.suite = req.body.address.suite;
+    user.address.city = req.body.address.city;
+    user.address.zipcode = req.body.address.zipcode;
     user.phone = req.body.phone;
 
     if (validateUser(user)) {

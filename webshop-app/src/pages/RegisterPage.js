@@ -10,6 +10,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import { useState } from "react";
+import '../css/Register.css';
 
 function RegisterPage() {
   const [inputs, setInputs] = useState({
@@ -256,7 +257,9 @@ function RegisterPage() {
           </>
         )}
       </Container>
-      <FooterComponent />
+      <div className="register-footer">
+        <FooterComponent />
+      </div>
       <ToastContainer className="p-3" position="top-end">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
