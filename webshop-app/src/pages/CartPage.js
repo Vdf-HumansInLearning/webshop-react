@@ -9,8 +9,6 @@ import CustomerAddress from "../components/cart/CustomerAddress";
 import { BASE_URL } from "../Constants";
 
 function CartPage() {
-  //---DECLARATIONS---
-  //file with const declaration; import url address here
   const url = "http://localhost:3001/";
 
   const orderList = JSON.parse(localStorage.getItem("items"));
@@ -43,8 +41,6 @@ function CartPage() {
     city: "",
     zipcode: "",
   });
-
-  //---METHODS---
 
   const changeQuantity = (id, type) => {
     let isIncrease = type === "increase";
@@ -262,9 +258,7 @@ function CartPage() {
         {orderSummary}
         {orderList && isLoggedIn && address}
       </Container>
-      <div className="cart-footer">
         <FooterComponent />
-      </div>
     </>
   );
 }

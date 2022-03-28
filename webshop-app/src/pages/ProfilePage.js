@@ -3,6 +3,7 @@ import NavbarComponent from "../components/NavbarComponent";
 import EditProfileModal from "../components/EditProfileModal";
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
+import "../css/ProfilePage.css";
 
 function ProfilePage() {
   const [modalShow, setModalShow] = useState(false);
@@ -117,7 +118,9 @@ function ProfilePage() {
           </>
         )}
       </div>
-      <FooterComponent />
+      <div className="profile-footer">
+        <FooterComponent />
+      </div>
     </>
   );
 }

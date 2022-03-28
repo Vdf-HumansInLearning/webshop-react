@@ -63,7 +63,9 @@ function OrdersPage() {
           <Link to="/">Go back to Home page</Link>
         </div>
       )}
-      <FooterComponent />
+      <div className="order-footer">
+        <FooterComponent />
+      </div>
     </>
   );
 }
