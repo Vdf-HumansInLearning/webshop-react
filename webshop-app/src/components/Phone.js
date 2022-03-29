@@ -116,7 +116,7 @@ function Phone({
               Price: <span className="price">{price}</span> RON
             </h5>
           )}
-          <LinkContainer to={"/phones/" + id}><Button variant="danger">See product details &gt;</Button></LinkContainer>
+          <LinkContainer to={"/phones/" + name}><Button variant="danger">See product details &gt;</Button></LinkContainer>
           {quantity > 0 ? (
             <button className="add-to-cart text-center btn btn-danger mt-2" onClick={() => handleAddToCart(id)}>
               Add to cart

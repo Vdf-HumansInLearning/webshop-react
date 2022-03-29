@@ -2,6 +2,7 @@ import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import { useState, useEffect } from "react";
 import UserList from "../components/UserList"
+import Breadcrumbs from "../components/Breadcrumbs";
 function UsersPage() {
     const [cartItemsNumber, setCartItemsNumber] = useState(0);
 
@@ -20,6 +21,7 @@ function UsersPage() {
     return (
         <>
             <NavbarComponent cartItemsNumber={cartItemsNumber}/>
+            <Breadcrumbs />
             <UserList />
             <FooterComponent />
         </>

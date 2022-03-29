@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
+import Breadcrumbs from "../components/Breadcrumbs";
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import '../css/PhoneDetails.css';
@@ -10,7 +11,7 @@ import '../css/PhoneDetails.css';
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
   const [cartItemsNumber, setCartItemsNumber] = useState(0);
-  let rating = [1,2,3,4,5]
+  let rating = [1,2,3,4,5];
 
   useEffect(() => {
     const afterLastSlash = window.location.pathname.substring(
@@ -57,6 +58,7 @@ function DetailsPage() {
   return (
     <>
       <NavbarComponent cartItemsNumber={cartItemsNumber}/>
+      <Breadcrumbs />
       {phone ? (
         <div className="container pt-5" id="container">
           <div className="title mt-3">

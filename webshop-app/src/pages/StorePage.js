@@ -1,12 +1,15 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import AddPhoneModal from "../components/AddPhoneModal";
+import Breadcrumbs from "../components/Breadcrumbs";
 import PhoneList from "../components/PhoneList";
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
 import "../css/StorePage.css";
+
 
 function StorePage() {
   const [addModalShow, setAddModalShow] = useState(false);
@@ -22,6 +25,10 @@ function StorePage() {
     search: "",
     sort: "none",
   });
+
+  // const breadcrumbs = useBreadcrumbs();
+  // const lastBreadcrumbs = breadcrumbs.slice(-1);
+  // const firstBreadcrumbs = breadcrumbs.slice(0, breadcrumbs.length - 1);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -91,6 +98,7 @@ function StorePage() {
   return (
     <>
       <NavbarComponent isAdmin={isAdmin} setIsAdmin={setIsAdmin} cartItemsNumber={cartItemsNumber}/>
+      <Breadcrumbs />
       <PhoneList cartItemsNumber={cartItemsNumber} setCartItemsNumber={setCartItemsNumber} isAdmin={isAdmin} filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
       { isAdmin &&
         <div className="d-flex justify-content-center mb-5 mt-5">
