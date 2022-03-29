@@ -32,21 +32,7 @@ function EditProfileModal(props) {
     const form = event.currentTarget;
     event.preventDefault();
     if (form.checkValidity()) {
-      console.log(profileToEdit);
-      console.log({
-        name: profileToEdit.name,
-        username: profileToEdit.username,
-        email: profileToEdit.email,
-        password: profileToEdit.password,
-        role: profileToEdit.role,
-        address: {
-          street: profileToEdit.street,
-          suite: profileToEdit.suite,
-          city: profileToEdit.city,
-          zipcode: profileToEdit.zipcode,
-        },
-        phone: profileToEdit.phone,
-      });
+      
       fetch("http://localhost:3001/users/" + props.id, {
         method: "PUT",
         headers: {

@@ -7,12 +7,16 @@ function UserList() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
+        getUsers();
+    }, [])
+
+    const getUsers = () => {
         fetch('http://localhost:3001/users')
             .then(response => response.json())
             .then(data => {
                 setUsers(data)
             })
-    }, [users])
+    }
 
     return (
         <>
@@ -28,6 +32,7 @@ function UserList() {
                             role={item.role}
                             address={item.address}
                             phone={item.phone}
+                            getUsers={getUsers}
                         />
                     )}
                 </ol>

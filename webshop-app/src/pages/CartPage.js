@@ -6,6 +6,8 @@ import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 import OrderSummary from "../components/cart/OrderSummary";
 import CustomerAddress from "../components/cart/CustomerAddress";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 import { BASE_URL } from "../Constants";
 
 function CartPage() {
@@ -18,6 +20,10 @@ function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [totalCartValue, setTotalCartValue] = useState(0);
   const [cartItemsNumber, setCartItemsNumber] = useState(0);
+  const [validated, setValidated] = useState(false);
+  const [show, setShow] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [currentUser, setCurrentUser] = useState({
     id: 1,
@@ -43,7 +49,7 @@ function CartPage() {
   });
 
   const changeQuantity = (id, type) => {
-    let isIncrease = type === "increase";
+    let isIncrease = type === "increase" ? true : false;
     let array = [...cartItems];
     const cartItemIndex = array.findIndex((item) => item.id === id);
     let condition = isIncrease
@@ -54,7 +60,7 @@ function CartPage() {
       : "You can remove items by clicking on the trash icon.";
 
     if (condition) {
-      if(isIncrease) {
+      if (isIncrease) {
         setCartItemsNumber(cartItemsNumber + 1);
       } else {
         setCartItemsNumber(cartItemsNumber - 1);
@@ -71,8 +77,9 @@ function CartPage() {
       let orders = array.map((item) => arrayToLocalStorage(item));
       localStorage.setItem("items", JSON.stringify(orders));
     } else {
-      //show toast
-      // toastMessage
+      setError(true);
+      setErrorMessage(toastMessage);
+      setShow(true);
     }
   };
 
@@ -82,9 +89,9 @@ function CartPage() {
     let quantity = array[foundIndex].quantity;
     if (foundIndex !== -1) {
       array.splice(foundIndex, 1);
-      if(array.length > 0){
-      const orders = array.map((item) => arrayToLocalStorage(item));
-      localStorage.setItem("items", JSON.stringify(orders));
+      if (array.length > 0) {
+        const orders = array.map((item) => arrayToLocalStorage(item));
+        localStorage.setItem("items", JSON.stringify(orders));
       } else {
         localStorage.removeItem("items");
       }
@@ -115,6 +122,9 @@ function CartPage() {
   };
 
   const placeOrder = (e) => {
+    const form = e.currentTarget;
+
+    setValidated(true);
     e.preventDefault();
     const orders = cartItems.map((item) => arrayToLocalStorage(item));
 
@@ -128,20 +138,29 @@ function CartPage() {
       },
     };
 
-    //validate addresses
-    fetch(url + "orders", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(order),
-    }).then((data) => {
-      if (data.status === 200) {
-        localStorage.removeItem("items");
-        //show toast
-        //order successful
-      }
-    });
+    if (form.checkValidity()) {
+      fetch(url + "orders", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      }).then((data) => {
+        if (data.status === 200) {
+          setError(false);
+          setErrorMessage("");
+          setShow(true);
+          setCartItemsNumber(0);
+          setTimeout(() => {
+            localStorage.removeItem("items");
+          })
+        } else {
+          setError(true);
+          setErrorMessage("An error occured! Please try again.");
+          setShow(true);
+        }
+      });
+    }
   };
 
   const getUser = (id) => {
@@ -190,21 +209,20 @@ function CartPage() {
       setTotalCartValue(sum);
     }
 
-    if(orderList) {
+    if (orderList) {
       let counter = 0;
-      for(let i=0; i<orderList.length; i++){
+      for (let i = 0; i < orderList.length; i++) {
         counter = counter + orderList[i].quantity;
       }
       setCartItemsNumber(counter);
     }
-
   }, []);
 
   //no items in cart and not logged in
-  if (!(orderList)) {
+  if (!orderList) {
     return (
       <>
-        <NavbarComponent cartItemsNumber={cartItemsNumber}/>
+        <NavbarComponent cartItemsNumber={cartItemsNumber} />
         <Container className="mt-5 pt-5 text-center">
           <h4>Your cart is empty</h4>
 
@@ -230,14 +248,12 @@ function CartPage() {
   if (orderList && !isLoggedIn) {
     return (
       <>
-      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
-      <Container className="mt-5 pt-5 text-center">
-        {orderSummary}
-      </Container>
-      <div className="cart-footer">
-        <FooterComponent />
-      </div>
-    </>
+        <NavbarComponent cartItemsNumber={cartItemsNumber} />
+        <Container className="mt-5 pt-5 text-center">{orderSummary}</Container>
+        <div className="cart-footer">
+          <FooterComponent />
+        </div>
+      </>
     );
   }
 
@@ -248,17 +264,47 @@ function CartPage() {
       handleChangeAddress={handleChangeAddress}
       billingAddress={billingAddress}
       deliveryAddress={deliveryAddress}
+      validated={validated}
     />
   );
 
   return (
     <>
-      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
+      <NavbarComponent cartItemsNumber={cartItemsNumber} />
+      <ToastContainer className="p-3" position="bottom-end">
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+          {error ? (
+            <>
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto text-danger">Error!</strong>
+              </Toast.Header>
+              <Toast.Body>{errorMessage}</Toast.Body>
+            </>
+          ) : (
+            <>
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto text-success">Success!</strong>
+              </Toast.Header>
+              <Toast.Body>Your ordered!</Toast.Body>
+            </>
+          )}
+        </Toast>
+      </ToastContainer>
       <Container className="mt-5 pt-5 text-center">
         {orderSummary}
         {orderList && isLoggedIn && address}
       </Container>
-        <FooterComponent />
+      <FooterComponent />
     </>
   );
 }

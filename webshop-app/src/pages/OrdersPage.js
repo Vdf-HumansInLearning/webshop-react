@@ -32,7 +32,6 @@ function OrdersPage() {
       .then((data) => setOrders(data));
   }, []);
 
-  console.log(orders);
   return (
     <>
       <NavbarComponent cartItemsNumber={cartItemsNumber}/>

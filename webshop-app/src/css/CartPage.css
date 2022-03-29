@@ -92,6 +92,7 @@
 .address-form {
   border: 1px solid #adadad;
   border-radius: 5px;
+  text-align: left;
 }
 
 .address-section {

@@ -2,6 +2,8 @@ import React from "react";
 import EditPhoneModal from "./EditPhoneModal";
 import DeletePhoneModal from "./DeletePhoneModal";
 import Button from "react-bootstrap/esm/Button";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 import { LinkContainer } from "react-router-bootstrap";
 import { useState } from "react";
 
@@ -23,10 +25,10 @@ function Phone({
 }) {
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
+  const [show, setShow] = useState(false);
 
 
   const deletePhone = () => {
-    console.log(id);
     fetch("http://localhost:3001/phones/" + id, {
       method: "DELETE",
     }).then((data) => {
@@ -56,11 +58,17 @@ function Phone({
         localStorage.setItem("items", JSON.stringify(items));
         setCartItemsNumber(cartItemsNumber + 1);
     }
-    
+    setShow(true)
   }
 
   return (
     <>
+    
+    <ToastContainer className="p-3" position="top-center">
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg="danger">
+          <Toast.Body>Product added to cart!</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <DeletePhoneModal
         deletePhone={deletePhone}
         onHide={() => setDeleteModalShow(false)}
