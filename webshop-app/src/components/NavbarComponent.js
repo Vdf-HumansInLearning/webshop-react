@@ -10,10 +10,12 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useState } from "react";
 import { BsCartFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router";
 import "../css/Navbar.css";
 
 function NavbarComponent(props) {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
   let loggedIn = false;
   let admin = false;
   let username;
@@ -35,6 +37,9 @@ function NavbarComponent(props) {
       props.setIsAdmin(false);
     }
     setShow(true);
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
   }
 
   return (
@@ -45,7 +50,7 @@ function NavbarComponent(props) {
             <Navbar.Brand className="text-danger">
               <img
                 className="p-1"
-                src="images/brand.png"
+                src="/images/brand.png"
                 width="40"
                 height="40"
               ></img>

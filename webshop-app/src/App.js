@@ -14,6 +14,7 @@ import StorePage from './pages/StorePage';
 import DetailsPage from './pages/DetailsPage';
 import ProfilePage from './pages/ProfilePage';
 import OrdersPage from './pages/OrdersPage';
+import ProtectedRoutes from './pages/ProtectedRoutes';
 
 
 function App() {
@@ -24,9 +25,18 @@ function App() {
         <Route path="/auth/login" element={<LoginPage />}/>
         <Route path="/auth/register" element={<RegisterPage />}/>
         <Route path="/cart" element={<CartPage />}/>
-        <Route path="/users" element={<UsersPage />}/>
-        <Route path="/profile" element={<ProfilePage />}/>
-        <Route path="/orders" element={<OrdersPage />} />
+        <Route element={<ProtectedRoutes />}>
+          {" "}
+          <Route path="/users" element={<UsersPage />}/>
+        </Route>
+        <Route element={<ProtectedRoutes />}>
+          {" "}
+          <Route path="/profile" element={<ProfilePage />}/>
+        </Route>
+        <Route element={<ProtectedRoutes />}>
+          {" "}
+          <Route path="/orders" element={<OrdersPage />} />
+        </Route>
         <Route path="/phones" element={<StorePage />} />
         <Route path="/phones/:id" element={<DetailsPage />} />
         <Route path="*" element={<NotFoundPage />}/>
