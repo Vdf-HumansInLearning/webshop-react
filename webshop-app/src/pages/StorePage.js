@@ -7,9 +7,7 @@ import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-
 import "../css/StorePage.css";
-
 
 function StorePage() {
   const [addModalShow, setAddModalShow] = useState(false);
@@ -25,10 +23,6 @@ function StorePage() {
     search: "",
     sort: "none",
   });
-
-  // const breadcrumbs = useBreadcrumbs();
-  // const lastBreadcrumbs = breadcrumbs.slice(-1);
-  // const firstBreadcrumbs = breadcrumbs.slice(0, breadcrumbs.length - 1);
 
   const handleChange = (event) => {
     const name = event.target.name;

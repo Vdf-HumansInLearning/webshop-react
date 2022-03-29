@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Accordion,
+  Button,
   Card,
   AccordionContext,
   useAccordionButton,
 } from "react-bootstrap";
 
-function ContextAwareToggle({ children, eventKey, callback }) {
+function ContextAwareToggle({ eventKey, callback }) {
   const { activeEventKey } = useContext(AccordionContext);
-  const [open, setOpen] = useState(false);
 
   const decoratedOnClick = useAccordionButton(
     eventKey,
@@ -18,18 +18,20 @@ function ContextAwareToggle({ children, eventKey, callback }) {
   const isCurrentEventKey = activeEventKey === eventKey;
 
   return (
-    <button
-      type="button"
-      // style={{ backgroundColor: isCurrentEventKey ? "pink" : "lavender" }}
-      onClick={decoratedOnClick}
-    >
+    <Button 
+      onClick={decoratedOnClick} 
+      variant="outline-dark" 
+      className="btn-collapse collapsed" 
+      type="button" data-bs-toggle="collapse" 
+      aria-expanded="false" 
+      aria-controls="collapseExample"
+      >
       {isCurrentEventKey ? (
         <i className="fas fa-chevron-circle-up"></i>
       ) : (
         <i className="fas fa-chevron-circle-down"></i>
       )}
-      {children}
-    </button>
+    </Button>
   );
 }
 export default function Order({

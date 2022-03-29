@@ -16,9 +16,9 @@ export default function Breadcrumbs() {
     const firstBreadcrumbs = breadcrumbs.slice(0, breadcrumbs.length - 1);
 
     return (
-        <>
+        <div className='container p-4'>
             {firstBreadcrumbs.map(({ breadcrumb }) => <span key={breadcrumb.key}><Link to={breadcrumb.key}>{breadcrumb}</Link> / </span>)}
             <span>{formattedBreadcrumb}</span>
-        </>
+        </div>
     )
 }
