@@ -53,7 +53,7 @@ router.get("/", function (req, res, next) {
 
 router.get("/:id", function (req, res, next) {
   let content = JSON.parse(fs.readFileSync("./data/phones.json", "utf8"));
-  let phone = content.find((item) => item["id"] == req.params.id);
+  let phone = content.find((item) => item["name"] == req.params.id);
   if (phone) {
     res.status(200).json(phone);
   } else {

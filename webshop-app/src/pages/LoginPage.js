@@ -142,30 +142,12 @@ function LoginPage() {
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
             <>
-              <Toast.Header>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto text-danger">Error!</strong>
-              </Toast.Header>
               <Toast.Body>
                 The email or the password are incorrect! Please try again.
               </Toast.Body>
             </>
           ) : (
-            <>
-              <Toast.Header>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto text-success">Success!</strong>
-              </Toast.Header>
               <Toast.Body>Successfully logged in!</Toast.Body>
-            </>
           )}
         </Toast>
       </ToastContainer>
