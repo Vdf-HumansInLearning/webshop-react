@@ -139,7 +139,6 @@ router.delete("/:id", function (req, res) {
 router.put("/:id", function (req, res, next) {
   let products = JSON.parse(fs.readFileSync("./data/phones.json", "utf8"));
   let phone = products.find((phone) => phone.id == req.params.id);
-  console.log(req.params.id);
   if (phone) {
     phone.name = req.body.name;
     phone.brand = req.body.brand;
@@ -150,7 +149,6 @@ router.put("/:id", function (req, res, next) {
     phone.availability_date = req.body.availability_date;
     phone.rating = Number(req.body.rating);
     phone.image = req.body.image;
-    console.log(phone);
 
     if (validateProduct(phone)) {
       fs.writeFile(

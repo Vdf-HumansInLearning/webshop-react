@@ -1,10 +1,12 @@
 import Address from "./Address";
+import Form from "react-bootstrap/Form";
 
 function CustomerAddress({
   placeOrder,
   handleChangeAddress,
   billingAddress,
   deliveryAddress,
+  validated
 }) {
   return (
     <>
@@ -13,7 +15,12 @@ function CustomerAddress({
         <span className="section-number">2</span>
         <h3>Select Address</h3>
       </div>
-      <form onSubmit={(e) => placeOrder(e)} className="p-2 address-form">
+      <Form
+        onSubmit={(e) => placeOrder(e)}
+        className="p-2 address-form"
+        noValidate
+        validated={validated}
+      >
         <Address
           title="Delivery Address"
           handleChangeAddress={(e) => handleChangeAddress(e, "delivery")}
@@ -29,7 +36,7 @@ function CustomerAddress({
             Place Order
           </button>
         </div>
-      </form>{" "}
+      </Form>{" "}
     </>
   );
 }

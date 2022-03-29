@@ -176,6 +176,7 @@ function RegisterPage() {
                     name="email"
                     value={inputs.email}
                     onChange={handleChange}
+                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                     required
                   />
                   <Form.Control.Feedback type="invalid">

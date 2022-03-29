@@ -14,7 +14,6 @@ export default function Breadcrumbs() {
 
 
     const firstBreadcrumbs = breadcrumbs.slice(0, breadcrumbs.length - 1);
-    console.log(lastBreadcrumbs)
 
     return (
         <>

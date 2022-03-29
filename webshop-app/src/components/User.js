@@ -10,20 +10,21 @@ function User({
     role,
     address,
     phone,
+    getUsers
 }) {
 
     const [idToDelete, setIdToDelete] = useState();
     const [modalShow, setModalShow] = useState(false);
 
     const openModal = (id) => {
-        console.log(id)
         setIdToDelete(id);
     }
 
     const deleteUser = () => {
-        console.log(idToDelete)
         fetch('http://localhost:3001/users/' + idToDelete, {
             method: 'DELETE',
+        }).then(function() {
+            getUsers();
         })
     }
 

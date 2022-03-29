@@ -30,7 +30,6 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
     const form = e.currentTarget;
     e.preventDefault();
     if (form.checkValidity()) {
-      console.log(phoneToEdit);
       fetch("http://localhost:3001/phones/" + props.id, {
         method: "PUT",
         headers: {

@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -11,6 +13,7 @@ import '../css/PhoneDetails.css';
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
   const [cartItemsNumber, setCartItemsNumber] = useState(0);
+  const [show, setShow] = useState(false);
   let rating = [1,2,3,4,5];
 
   useEffect(() => {
@@ -52,6 +55,7 @@ function DetailsPage() {
         localStorage.setItem("items", JSON.stringify(items));
         setCartItemsNumber(cartItemsNumber + 1);
     }
+    setShow(true);
     
   }
 
@@ -152,6 +156,11 @@ function DetailsPage() {
       ) : (
         <></>
       )}
+      <ToastContainer className="p-3" position="top-center">
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg="danger">
+          <Toast.Body>Product added to cart!</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <div className="details-footer">
        <FooterComponent />
       </div>
