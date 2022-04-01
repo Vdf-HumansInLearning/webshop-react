@@ -155,7 +155,7 @@ function LoginPage() {
       <div className="login-footer">
         <FooterComponent />
       </div>
-      <ToastContainer className="p-3" position="top-end">
+      <ToastContainer className="p-3 top-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
             <>
