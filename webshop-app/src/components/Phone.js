@@ -64,7 +64,7 @@ function Phone({
   return (
     <>
     
-    <ToastContainer className="p-3" position="top-center">
+    <ToastContainer className="p-3 top-0 end-0" >
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg="danger">
           <Toast.Body>Product added to cart!</Toast.Body>
         </Toast>

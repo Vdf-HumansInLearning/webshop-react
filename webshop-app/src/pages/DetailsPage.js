@@ -64,7 +64,7 @@ function DetailsPage() {
       <NavbarComponent cartItemsNumber={cartItemsNumber}/>
       <Breadcrumbs />
       {phone ? (
-        <div className="container pt-5" id="container">
+        <div className="container" id="container">
           <div className="title mt-3">
             <h4 className="title details-title" id="brand">
               {phone.brand}{" "}
@@ -156,7 +156,7 @@ function DetailsPage() {
       ) : (
         <></>
       )}
-      <ToastContainer className="p-3" position="top-center">
+      <ToastContainer className="p-3 top-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg="danger">
           <Toast.Body>Product added to cart!</Toast.Body>
         </Toast>
