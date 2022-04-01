@@ -18,9 +18,6 @@
     margin: 0px auto;
 }
 
-.order-footer {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    margin: auto;
-  }
+.order-main {
+    min-height: calc(100vh - 250px);
+}

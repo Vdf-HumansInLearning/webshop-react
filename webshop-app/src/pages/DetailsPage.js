@@ -4,6 +4,7 @@ import axios from "axios";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import FooterComponent from "../components/FooterComponent";
+// import DummyFooter from '../components/DummyFooter';
 import NavbarComponent from "../components/NavbarComponent";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { FaStar, FaRegStar } from "react-icons/fa";
@@ -75,7 +76,7 @@ function DetailsPage() {
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
       <Breadcrumbs />
       {phone ? (
-        <div className="container" id="container">
+        <div className="container container-footer" id="container" >
           <div className="title mt-3">
             <h4 className="title details-title" id="brand">
               {phone.brand}{" "}
@@ -179,7 +180,7 @@ function DetailsPage() {
         </Toast>
       </ToastContainer>
       <div className="details-footer">
-        <FooterComponent />
+        <FooterComponent  />
       </div>
     </>
   );

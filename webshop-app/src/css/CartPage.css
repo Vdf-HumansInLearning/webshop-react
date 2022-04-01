@@ -106,3 +106,7 @@
   bottom: 0;
   margin: auto;
 }
+
+.cart-container {
+  min-height: calc(100vh - 300px);
+}
