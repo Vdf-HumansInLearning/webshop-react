@@ -19,11 +19,7 @@ function ProfilePage() {
 
   useEffect(() => {
     if (user_id && logged_in) {
-      fetch("http://localhost:3001/users/" + user_id)
-        .then((response) => response.json())
-        .then((data) => {
-          setUser(data);
-        });
+      getProfile();
     }
 
     const cartItems = JSON.parse(localStorage.getItem("items"));
@@ -35,6 +31,14 @@ function ProfilePage() {
       setCartItemsNumber(counter);
     }
   }, []);
+
+  const getProfile = () => {
+    fetch("http://localhost:3001/users/" + user_id)
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+      });
+  };
 
   return (
     <>
@@ -109,6 +113,7 @@ function ProfilePage() {
               phone={user.phone}
               show={modalShow}
               onHide={() => setModalShow(false)}
+              getProfile={getProfile}
             />
           </>
         ) : (

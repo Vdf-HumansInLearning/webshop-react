@@ -32,7 +32,6 @@ function EditProfileModal(props) {
     const form = event.currentTarget;
     event.preventDefault();
     if (form.checkValidity()) {
-      
       fetch("http://localhost:3001/users/" + props.id, {
         method: "PUT",
         headers: {
@@ -55,6 +54,7 @@ function EditProfileModal(props) {
       }).then((data) => {
         if (data.status === 201) {
           console.log("profile edited");
+          props.getProfile();
           props.onHide();
         } else {
           console.log("error");
