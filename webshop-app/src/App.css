@@ -17,6 +17,10 @@
   cursor: pointer;
 }
 
+.toast-container {
+  position: fixed !important;
+}
+
 .footer {
   bottom: 0;
   display: flex;

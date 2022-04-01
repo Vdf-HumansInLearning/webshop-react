@@ -249,7 +249,7 @@ function CartPage() {
       <>
         <NavbarComponent cartItemsNumber={cartItemsNumber} />
         <Container className="mt-5 pt-5 text-center">{orderSummary}</Container>
-        <ToastContainer className="p-3" position="bottom-end">
+        <ToastContainer className="p-3 bottom-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
             <>
@@ -297,7 +297,7 @@ function CartPage() {
   return (
     <>
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
-      <ToastContainer className="p-3" position="bottom-end">
+      <ToastContainer className="p-3 bottom-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
             <>

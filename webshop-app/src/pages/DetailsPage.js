@@ -167,7 +167,7 @@ function DetailsPage() {
       ) : (
         <></>
       )}
-      <ToastContainer className="p-3" position="top-center">
+      <ToastContainer className="p-3 top-0 end-0">
         <Toast
           onClose={() => setShow(false)}
           show={show}
