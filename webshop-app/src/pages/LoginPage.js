@@ -77,91 +77,93 @@ function LoginPage() {
   }
 
   return (
-    <motion.div
-      initial={{ width: 0 }}
-      animate={{ width: "100%" }}
-      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
-    >
+    <>
       <NavbarComponent navStyle="simple" />
-      <Container className="container d-flex justify-content-center flex-column align-items-center mt-5 pt-5">
-        {loggedIn ? (
-          <>
-            <h3 className="main-title">You are logged in.</h3>
-            <LinkContainer to="/">
-              <Button variant="outline-danger">Go to Home page</Button>
-            </LinkContainer>
-          </>
-        ) : (
-          <>
-            <h1 className="main-title">Login to your account</h1>
-            <Form
-              className="login-form mt-4"
-              noValidate
-              validated={validated}
-              onSubmit={handleSubmit}
-            >
-              <InputGroup className="mb-3">
-                <InputGroup.Text>
-                  <FaUser />
-                </InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  name="email"
-                  value={inputs.email}
-                  onChange={handleChange}
-                  placeholder="Email"
-                  aria-label="Email"
-                  aria-describedby="basic-addon1"
-                  pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid email address.
-                </Form.Control.Feedback>
-              </InputGroup>
-              <InputGroup className="mb-3">
-                <InputGroup.Text>
-                  <FaUnlock />
-                </InputGroup.Text>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  value={inputs.password}
-                  onChange={handleChange}
-                  placeholder="Password"
-                  aria-label="Password"
-                  aria-describedby="basic-addon1"
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a password.
-                </Form.Control.Feedback>
-              </InputGroup>
-              <div className="text-center">
-                <Button
-                  type="submit"
-                  variant="outline-danger"
-                  className="w-100 mt-3"
-                >
-                  Login
-                </Button>
-                <Form.Text>
-                  You don't have an account?{" "}
-                  <LinkContainer
-                    to="/auth/register"
-                    className="register-link text-danger"
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
+      >
+        <Container className="container d-flex justify-content-center flex-column align-items-center mt-5 pt-5">
+          {loggedIn ? (
+            <>
+              <h3 className="main-title">You are logged in.</h3>
+              <LinkContainer to="/">
+                <Button variant="outline-danger">Go to Home page</Button>
+              </LinkContainer>
+            </>
+          ) : (
+            <>
+              <h1 className="main-title">Login to your account</h1>
+              <Form
+                className="login-form mt-4"
+                noValidate
+                validated={validated}
+                onSubmit={handleSubmit}
+              >
+                <InputGroup className="mb-3">
+                  <InputGroup.Text>
+                    <FaUser />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    name="email"
+                    value={inputs.email}
+                    onChange={handleChange}
+                    placeholder="Email"
+                    aria-label="Email"
+                    aria-describedby="basic-addon1"
+                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a valid email address.
+                  </Form.Control.Feedback>
+                </InputGroup>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text>
+                    <FaUnlock />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    value={inputs.password}
+                    onChange={handleChange}
+                    placeholder="Password"
+                    aria-label="Password"
+                    aria-describedby="basic-addon1"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a password.
+                  </Form.Control.Feedback>
+                </InputGroup>
+                <div className="text-center">
+                  <Button
+                    type="submit"
+                    variant="outline-danger"
+                    className="w-100 mt-3"
                   >
-                    <span>Register</span>
-                  </LinkContainer>
-                </Form.Text>
-              </div>
-            </Form>
-          </>
-        )}
-      </Container>
-      <div className="login-footer">
-        <FooterComponent />
-      </div>
+                    Login
+                  </Button>
+                  <Form.Text>
+                    You don't have an account?{" "}
+                    <LinkContainer
+                      to="/auth/register"
+                      className="register-link text-danger"
+                    >
+                      <span>Register</span>
+                    </LinkContainer>
+                  </Form.Text>
+                </div>
+              </Form>
+            </>
+          )}
+        </Container>
+        <div className="login-footer">
+          <FooterComponent />
+        </div>
+      </motion.div>
       <ToastContainer className="p-3 top-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
@@ -183,7 +185,7 @@ function LoginPage() {
           )}
         </Toast>
       </ToastContainer>
-    </motion.div>
+    </>
   );
 }
 

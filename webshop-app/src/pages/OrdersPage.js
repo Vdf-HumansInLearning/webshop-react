@@ -34,42 +34,44 @@ function OrdersPage() {
   }, []);
 
   return (
-    <motion.div
-      initial={{ width: 0 }}
-      animate={{ width: "100%" }}
-      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
-    >
+    <>
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
-      {loggedIn && orders.length > 0 ? (
-        <main className="order-main">
-          {orders.map((order) => (
-            <Order
-              key={order.id}
-              order={order}
-              id={order.id}
-              email={order.email}
-              name={order.name}
-              phone={order.name}
-              date={order.date}
-              total={order.total}
-              deliveryAddress={order.delivery_address}
-              billingAddress={order.billing_address}
-            />
-          ))}
-        </main>
-      ) : loggedIn && orders.length === 0 ? (
-        <div className="text-center mt-5">
-          <h3>You don't have any orders yet</h3>
-          <Link to="/">Go back to Home page</Link>
-        </div>
-      ) : (
-        <div className="text-center mt-5">
-          <h3>You're not allowed on this page</h3>
-          <Link to="/">Go back to Home page</Link>
-        </div>
-      )}
-      <FooterComponent />
-    </motion.div>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
+      >
+        {loggedIn && orders.length > 0 ? (
+          <main className="order-main">
+            {orders.map((order) => (
+              <Order
+                key={order.id}
+                order={order}
+                id={order.id}
+                email={order.email}
+                name={order.name}
+                phone={order.name}
+                date={order.date}
+                total={order.total}
+                deliveryAddress={order.delivery_address}
+                billingAddress={order.billing_address}
+              />
+            ))}
+          </main>
+        ) : loggedIn && orders.length === 0 ? (
+          <div className="text-center mt-5">
+            <h3>You don't have any orders yet</h3>
+            <Link to="/">Go back to Home page</Link>
+          </div>
+        ) : (
+          <div className="text-center mt-5">
+            <h3>You're not allowed on this page</h3>
+            <Link to="/">Go back to Home page</Link>
+          </div>
+        )}
+        <FooterComponent />
+      </motion.div>
+    </>
   );
 }
 

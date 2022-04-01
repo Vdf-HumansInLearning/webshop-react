@@ -73,121 +73,125 @@ function DetailsPage() {
   };
 
   return (
-    <motion.div
-      initial={{ width: 0 }}
-      animate={{ width: "100%" }}
-      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
-    >
+    <>
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
-      <Breadcrumbs />
-      {phone ? (
-        <div className="container container-footer" id="container">
-          <div className="title mt-3">
-            <h4 className="title details-title" id="brand">
-              {phone.brand}{" "}
-              <span className="subtitle text-danger" id="name">
-                {phone.name}
-              </span>
-            </h4>
-          </div>
-          <div className="container container-details mt-3">
-            <div className="row">
-              <div className="col-sm-6 col-12" id="phone-img">
-                <img
-                  className="phone-details-img"
-                  src={"/images/" + phone.image}
-                  alt="Phone placeholder"
-                ></img>
-              </div>
-              <div
-                className="details col-sm-6 col-12 align-self-center"
-                id="phone-details"
-              >
-                {phone.discount > 0 ? (
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
+      >
+        <Breadcrumbs />
+        {phone ? (
+          <div className="container container-footer" id="container">
+            <div className="title mt-3">
+              <h4 className="title details-title" id="brand">
+                {phone.brand}{" "}
+                <span className="subtitle text-danger" id="name">
+                  {phone.name}
+                </span>
+              </h4>
+            </div>
+            <div className="container container-details mt-3">
+              <div className="row">
+                <div className="col-sm-6 col-12" id="phone-img">
+                  <img
+                    className="phone-details-img"
+                    src={"/images/" + phone.image}
+                    alt="Phone placeholder"
+                  ></img>
+                </div>
+                <div
+                  className="details col-sm-6 col-12 align-self-center"
+                  id="phone-details"
+                >
+                  {phone.discount > 0 ? (
+                    <h5>
+                      Price : <span className="discounted">{phone.price}</span>{" "}
+                      <span id="price">{phone.price - phone.discount}</span> RON
+                    </h5>
+                  ) : (
+                    <h5>
+                      Price : <span id="price">{phone.price}</span> RON
+                    </h5>
+                  )}
+                  <div id="rating">
+                    <h5 className="d-flex align-items-center">
+                      Rating :
+                      {rating.map((item) => {
+                        if (phone.rating >= item) {
+                          return <FaStar className="star" key={item} />;
+                        } else {
+                          return <FaRegStar className="star" key={item} />;
+                        }
+                      })}
+                      {phone.rating > 0 ? (
+                        <span> ({phone.rating})</span>
+                      ) : (
+                        <span> (-)</span>
+                      )}
+                    </h5>
+                  </div>
                   <h5>
-                    Price : <span className="discounted">{phone.price}</span>{" "}
-                    <span id="price">{phone.price - phone.discount}</span> RON
+                    Operating system :{" "}
+                    <span className="detail-value">
+                      {phone.operating_system}
+                    </span>
                   </h5>
-                ) : (
                   <h5>
-                    Price : <span id="price">{phone.price}</span> RON
+                    Available from date :{" "}
+                    <span className="detail-value">
+                      {phone.availability_date}
+                    </span>
                   </h5>
-                )}
-                <div id="rating">
-                  <h5 className="d-flex align-items-center">
-                    Rating :
-                    {rating.map((item) => {
-                      if (phone.rating >= item) {
-                        return <FaStar className="star" key={item} />;
-                      } else {
-                        return <FaRegStar className="star" key={item} />;
-                      }
-                    })}
-                    {phone.rating > 0 ? (
-                      <span> ({phone.rating})</span>
+                  <h5>
+                    In stock :
+                    {phone.quantity > 0 ? (
+                      <span className="detail-value"> YES</span>
                     ) : (
-                      <span> (-)</span>
+                      <span className="detail-value"> NO</span>
                     )}
                   </h5>
-                </div>
-                <h5>
-                  Operating system :{" "}
-                  <span className="detail-value">{phone.operating_system}</span>
-                </h5>
-                <h5>
-                  Available from date :{" "}
-                  <span className="detail-value">
-                    {phone.availability_date}
-                  </span>
-                </h5>
-                <h5>
-                  In stock :
                   {phone.quantity > 0 ? (
-                    <span className="detail-value"> YES</span>
+                    <button
+                      id="add-to-cart"
+                      className="text-center btn btn-outline-danger mt-3"
+                      onClick={() => handleAddToCart(phone.id)}
+                    >
+                      Add to cart
+                    </button>
                   ) : (
-                    <span className="detail-value"> NO</span>
+                    <button
+                      id="add-to-cart"
+                      className="text-center btn btn-outline-danger mt-3"
+                      onClick={() => handleAddToCart(phone.id)}
+                      disabled
+                    >
+                      Add to cart
+                    </button>
                   )}
-                </h5>
-                {phone.quantity > 0 ? (
-                  <button
-                    id="add-to-cart"
-                    className="text-center btn btn-outline-danger mt-3"
-                    onClick={() => handleAddToCart(phone.id)}
-                  >
-                    Add to cart
-                  </button>
-                ) : (
-                  <button
-                    id="add-to-cart"
-                    className="text-center btn btn-outline-danger mt-3"
-                    onClick={() => handleAddToCart(phone.id)}
-                    disabled
-                  >
-                    Add to cart
-                  </button>
-                )}
+                </div>
               </div>
             </div>
           </div>
+        ) : (
+          <></>
+        )}
+        <ToastContainer className="p-3 top-0 end-0">
+          <Toast
+            onClose={() => setShow(false)}
+            show={show}
+            delay={3000}
+            autohide
+            bg="danger"
+          >
+            <Toast.Body>Product added to cart!</Toast.Body>
+          </Toast>
+        </ToastContainer>
+        <div className="details-footer">
+          <FooterComponent />
         </div>
-      ) : (
-        <></>
-      )}
-      <ToastContainer className="p-3 top-0 end-0">
-        <Toast
-          onClose={() => setShow(false)}
-          show={show}
-          delay={3000}
-          autohide
-          bg="danger"
-        >
-          <Toast.Body>Product added to cart!</Toast.Body>
-        </Toast>
-      </ToastContainer>
-      <div className="details-footer">
-        <FooterComponent />
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }
 

@@ -94,43 +94,45 @@ function StorePage() {
   }, []);
 
   return (
-    <motion.div
-      initial={{ width: 0 }}
-      animate={{ width: "100%" }}
-      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
-    >
+    <>
       <NavbarComponent
         isAdmin={isAdmin}
         setIsAdmin={setIsAdmin}
         cartItemsNumber={cartItemsNumber}
       />
-      <Breadcrumbs />
-      <PhoneList
-        cartItemsNumber={cartItemsNumber}
-        setCartItemsNumber={setCartItemsNumber}
-        isAdmin={isAdmin}
-        filterValues={filterValues}
-        filters={filters}
-        phones={phones}
-        setFilters={setFilters}
-        handleChange={handleChange}
-        handleReset={handleReset}
-        getPhones={getPhones}
-      />
-      {isAdmin && (
-        <div className="d-flex justify-content-center mb-5 mt-5">
-          <Button variant="danger" onClick={() => setAddModalShow(true)}>
-            Add Phone
-          </Button>
-        </div>
-      )}
-      <AddPhoneModal
-        show={addModalShow}
-        onHide={() => setAddModalShow(false)}
-        getPhones={getPhones}
-      />
-      <FooterComponent />
-    </motion.div>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
+      >
+        <Breadcrumbs />
+        <PhoneList
+          cartItemsNumber={cartItemsNumber}
+          setCartItemsNumber={setCartItemsNumber}
+          isAdmin={isAdmin}
+          filterValues={filterValues}
+          filters={filters}
+          phones={phones}
+          setFilters={setFilters}
+          handleChange={handleChange}
+          handleReset={handleReset}
+          getPhones={getPhones}
+        />
+        {isAdmin && (
+          <div className="d-flex justify-content-center mb-5 mt-5">
+            <Button variant="danger" onClick={() => setAddModalShow(true)}>
+              Add Phone
+            </Button>
+          </div>
+        )}
+        <AddPhoneModal
+          show={addModalShow}
+          onHide={() => setAddModalShow(false)}
+          getPhones={getPhones}
+        />
+        <FooterComponent />
+      </motion.div>
+    </>
   );
 }
 

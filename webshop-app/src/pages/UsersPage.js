@@ -26,22 +26,30 @@ function UsersPage() {
   }, []);
 
   return (
-    <motion.div
-      initial={{ width: 0 }}
-      animate={{ width: "100%" }}
-      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
-    >
+    <>
       {isAdmin ? (
         <>
           <NavbarComponent cartItemsNumber={cartItemsNumber} />
-          <Breadcrumbs />
-          <UserList />
-          <FooterComponent />
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
+          >
+            <Breadcrumbs />
+            <UserList />
+            <FooterComponent />
+          </motion.div>
         </>
       ) : (
-        <NotFoundPage />
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: "100%" }}
+          exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
+        >
+          <NotFoundPage />
+        </motion.div>
       )}
-    </motion.div>
+    </>
   );
 }
 

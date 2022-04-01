@@ -85,12 +85,13 @@ function RegisterPage() {
   }
 
   return (
-    <motion.div
+    <>
+      <NavbarComponent navStyle="simple" />
+      <motion.div
       initial={{ width: 0 }}
       animate={{ width: "100%" }}
       exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
-    >
-      <NavbarComponent navStyle="simple" />
+      >
       <Container className="container d-flex justify-content-center flex-column align-items-center my-5 pt-5">
         {loggedIn ? (
           <>
@@ -270,6 +271,7 @@ function RegisterPage() {
       <div className="register-footer">
         <FooterComponent />
       </div>
+      </motion.div>
       <ToastContainer className="p-3 top-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           {error ? (
@@ -299,7 +301,7 @@ function RegisterPage() {
           )}
         </Toast>
       </ToastContainer>
-    </motion.div>
+    </>
   );
 }
 
