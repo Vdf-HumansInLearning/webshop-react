@@ -42,6 +42,7 @@ export default function Order({
   date,
   total,
   deliveryAddress,
+  billingAddress
 }) {
   let count = 1;
   let dateTransformed = new Date(date);
@@ -71,7 +72,7 @@ export default function Order({
         <Accordion.Collapse eventKey="0">
           <Card.Body>
             <h6>
-              Email:<span className="fw-light fst-italic">{email}</span>
+              Email: <span className="fw-light fst-italic">{email}</span>
             </h6>
             <h6>
               Phone: <span className="fw-light fst-italic">{phone}</span>
@@ -88,8 +89,8 @@ export default function Order({
               Billing Address:
               <span className="fw-light fst-italic">
                 {" "}
-                {deliveryAddress.street} street, {deliveryAddress.suite},{" "}
-                {deliveryAddress.zipcode}, {deliveryAddress.city}
+                {billingAddress.street} street, {billingAddress.suite},{" "}
+                {billingAddress.zipcode}, {billingAddress.city}
               </span>
             </h6>
             <h6>

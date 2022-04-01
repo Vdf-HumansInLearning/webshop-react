@@ -10,7 +10,7 @@ function CartItem({ cartItem, changeQuantity, showDeleteModal }) {
               onClick={() => {
                 changeQuantity(cartItem.id, "decrease");
               }}
-              disabled={cartItem.quantity < 2}
+              disabled={cartItem.quantity < 1}
               className="quantity-btn minus-btn"
             >
               <i className="fas fa-minus-circle mx-2"></i>
@@ -33,7 +33,7 @@ function CartItem({ cartItem, changeQuantity, showDeleteModal }) {
       <div className="price-div">
         <p>Price</p>
         <p className="price">
-          {cartItem.quantity} x {cartItem.price} = {cartItem.value} RON
+          {cartItem.quantity} x {cartItem.price} = {cartItem.quantity * cartItem.price} RON
         </p>
       </div>
       <div className="remove-div">

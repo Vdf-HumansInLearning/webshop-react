@@ -17,6 +17,7 @@ function LoginPage() {
   const [inputs, setInputs] = useState({ email: "", password: "" });
   const [show, setShow] = useState(false);
   const [error, setError] = useState(false);
+  const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
   let loggedIn = false;
@@ -33,40 +34,45 @@ function LoginPage() {
   }
 
   function handleSubmit(e) {
+    const form = e.currentTarget;
+
+    setValidated(true);
     e.preventDefault();
-    fetch("http://localhost:3001/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: inputs.email,
-        password: inputs.password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.message) {
-          setError(false);
-          localStorage.setItem("user_username", data.username);
-          localStorage.setItem("user_id", data.id);
-          localStorage.setItem("user_role", data.role);
-          setShow(true);
-          setTimeout(() => {
-            navigate("/");
-          }, 3000);
-        } else {
-          setError(true);
-          setInputs({ email: "", password: "" });
-          localStorage.removeItem("user_username");
-          localStorage.removeItem("user_id");
-          localStorage.removeItem("user_role");
-          setShow(true);
-        }
+    if(form.checkValidity()) {
+      fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: inputs.email,
+          password: inputs.password,
+        }),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.message) {
+            setError(false);
+            localStorage.setItem("user_username", data.username);
+            localStorage.setItem("user_id", data.id);
+            localStorage.setItem("user_role", data.role);
+            setShow(true);
+            setTimeout(() => {
+              navigate("/");
+            }, 3000);
+          } else {
+            setError(true);
+            setInputs({ ...inputs, password: ""});
+            localStorage.removeItem("user_username");
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("user_role");
+            setShow(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      }
   }
 
   return (
@@ -75,17 +81,20 @@ function LoginPage() {
       <Container className="container d-flex justify-content-center flex-column align-items-center mt-5 pt-5">
         {loggedIn ? (
           <>
-            <h3 className="main-title">You are already logged in.</h3>
+            <h3 className="main-title">You are logged in.</h3>
             <LinkContainer to="/">
-              <Button variant="outline-danger">Go back to Home page</Button>
+              <Button variant="outline-danger">Go to Home page</Button>
             </LinkContainer>
           </>
         ) : (
           <>
             <h1 className="main-title">Login to your account</h1>
-            <Form className="login-form mt-4">
-              <InputGroup className="input-group mb-3">
-                <InputGroup.Text className="input-group-text">
+            <Form className="login-form mt-4"
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}>
+              <InputGroup className="mb-3">
+                <InputGroup.Text >
                   <FaUser />
                 </InputGroup.Text>
                 <Form.Control
@@ -96,11 +105,15 @@ function LoginPage() {
                   placeholder="Email"
                   aria-label="Email"
                   aria-describedby="basic-addon1"
+                  pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                    Please provide a valid email address.
+                </Form.Control.Feedback>
               </InputGroup>
-              <InputGroup className="input-group mb-3">
-                <InputGroup.Text className="input-group-text">
+              <InputGroup className="mb-3">
+                <InputGroup.Text >
                   <FaUnlock />
                 </InputGroup.Text>
                 <Form.Control
@@ -113,13 +126,15 @@ function LoginPage() {
                   aria-describedby="basic-addon1"
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                    Please provide a password.
+                </Form.Control.Feedback>
               </InputGroup>
               <div className="text-center">
                 <Button
                   type="submit"
                   variant="outline-danger"
                   className="w-100 mt-3"
-                  onClick={handleSubmit}
                 >
                   Login
                 </Button>
