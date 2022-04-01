@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import { useState } from "react";
 import "../css/LoginPage.css";
+import { motion } from "framer-motion";
 
 function LoginPage() {
   const [inputs, setInputs] = useState({ email: "", password: "" });
@@ -38,7 +39,7 @@ function LoginPage() {
 
     setValidated(true);
     e.preventDefault();
-    if(form.checkValidity()) {
+    if (form.checkValidity()) {
       fetch("http://localhost:3001/auth/login", {
         method: "POST",
         headers: {
@@ -62,7 +63,7 @@ function LoginPage() {
             }, 3000);
           } else {
             setError(true);
-            setInputs({ ...inputs, password: ""});
+            setInputs({ ...inputs, password: "" });
             localStorage.removeItem("user_username");
             localStorage.removeItem("user_id");
             localStorage.removeItem("user_role");
@@ -72,11 +73,15 @@ function LoginPage() {
         .catch((error) => {
           console.error("Error:", error);
         });
-      }
+    }
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
       <NavbarComponent navStyle="simple" />
       <Container className="container d-flex justify-content-center flex-column align-items-center mt-5 pt-5">
         {loggedIn ? (
@@ -89,12 +94,14 @@ function LoginPage() {
         ) : (
           <>
             <h1 className="main-title">Login to your account</h1>
-            <Form className="login-form mt-4"
-            noValidate
-            validated={validated}
-            onSubmit={handleSubmit}>
+            <Form
+              className="login-form mt-4"
+              noValidate
+              validated={validated}
+              onSubmit={handleSubmit}
+            >
               <InputGroup className="mb-3">
-                <InputGroup.Text >
+                <InputGroup.Text>
                   <FaUser />
                 </InputGroup.Text>
                 <Form.Control
@@ -109,11 +116,11 @@ function LoginPage() {
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                    Please provide a valid email address.
+                  Please provide a valid email address.
                 </Form.Control.Feedback>
               </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text >
+                <InputGroup.Text>
                   <FaUnlock />
                 </InputGroup.Text>
                 <Form.Control
@@ -127,7 +134,7 @@ function LoginPage() {
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                    Please provide a password.
+                  Please provide a password.
                 </Form.Control.Feedback>
               </InputGroup>
               <div className="text-center">
@@ -172,11 +179,11 @@ function LoginPage() {
               </Toast.Body>
             </>
           ) : (
-              <Toast.Body>Successfully logged in!</Toast.Body>
+            <Toast.Body>Successfully logged in!</Toast.Body>
           )}
         </Toast>
       </ToastContainer>
-    </>
+    </motion.div>
   );
 }
 

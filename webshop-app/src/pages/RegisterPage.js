@@ -10,7 +10,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import { useState } from "react";
-import '../css/Register.css';
+import "../css/Register.css";
+import { motion } from "framer-motion";
 
 function RegisterPage() {
   const [inputs, setInputs] = useState({
@@ -45,46 +46,50 @@ function RegisterPage() {
 
     setValidated(true);
     e.preventDefault();
-    if(form.checkValidity()) {
-        fetch("http://localhost:3001/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name:  `${inputs.firstName} ${inputs.lastName}`,
-        username: inputs.username,
-        email: inputs.email,
-        password: inputs.password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === "Successfully registered") {
-          setError(false);
-          setShow(true);
-          setTimeout(() => {
-            navigate("/auth/login");
-          }, 3000);
-        } else {
-          setError(true);
-          setErrorMessage(data.message);
-          setInputs({
-            ...inputs,
-            password: "",
-            coPassword: "",
-          });
-          setShow(true);
-        }
+    if (form.checkValidity()) {
+      fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: `${inputs.firstName} ${inputs.lastName}`,
+          username: inputs.username,
+          email: inputs.email,
+          password: inputs.password,
+        }),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message === "Successfully registered") {
+            setError(false);
+            setShow(true);
+            setTimeout(() => {
+              navigate("/auth/login");
+            }, 3000);
+          } else {
+            setError(true);
+            setErrorMessage(data.message);
+            setInputs({
+              ...inputs,
+              password: "",
+              coPassword: "",
+            });
+            setShow(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     }
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
       <NavbarComponent navStyle="simple" />
       <Container className="container d-flex justify-content-center flex-column align-items-center my-5 pt-5">
         {loggedIn ? (
@@ -203,11 +208,15 @@ function RegisterPage() {
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    <p>Please provide a valid password. The password needs to: </p>
+                    <p>
+                      Please provide a valid password. The password needs to:{" "}
+                    </p>
                     <ul>
-                        <li>include both lower and upper case characters</li>
-                        <li>include at least one number and one special character</li>
-                        <li>be at least 8 characters long.</li>
+                      <li>include both lower and upper case characters</li>
+                      <li>
+                        include at least one number and one special character
+                      </li>
+                      <li>be at least 8 characters long.</li>
                     </ul>
                   </Form.Control.Feedback>
                 </Col>
@@ -290,7 +299,7 @@ function RegisterPage() {
           )}
         </Toast>
       </ToastContainer>
-    </>
+    </motion.div>
   );
 }
 

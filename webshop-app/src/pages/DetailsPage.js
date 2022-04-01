@@ -10,6 +10,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 import "../css/PhoneDetails.css";
+import { motion } from "framer-motion";
 
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
@@ -72,11 +73,15 @@ function DetailsPage() {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
       <Breadcrumbs />
       {phone ? (
-        <div className="container container-footer" id="container" >
+        <div className="container container-footer" id="container">
           <div className="title mt-3">
             <h4 className="title details-title" id="brand">
               {phone.brand}{" "}
@@ -180,9 +185,9 @@ function DetailsPage() {
         </Toast>
       </ToastContainer>
       <div className="details-footer">
-        <FooterComponent  />
+        <FooterComponent />
       </div>
-    </>
+    </motion.div>
   );
 }
 

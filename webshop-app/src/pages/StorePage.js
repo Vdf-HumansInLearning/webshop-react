@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import "../css/StorePage.css";
+import { motion } from "framer-motion";
 
 function StorePage() {
   const [addModalShow, setAddModalShow] = useState(false);
@@ -52,8 +53,8 @@ function StorePage() {
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("items"));
     let counter = 0;
-    if(cartItems) {
-      for(let i=0; i<cartItems.length; i++){
+    if (cartItems) {
+      for (let i = 0; i < cartItems.length; i++) {
         counter = counter + cartItems[i].quantity;
       }
       setCartItemsNumber(counter);
@@ -77,37 +78,59 @@ function StorePage() {
 
   const getPhones = () => {
     axios
-    .get("http://localhost:3001/phones", { params: filters })
-    .then(function (response) {
-      setPhones(response.data.products);
-      setFilterValues(response.data.filters);
-    });
-  }
+      .get("http://localhost:3001/phones", { params: filters })
+      .then(function (response) {
+        setPhones(response.data.products);
+        setFilterValues(response.data.filters);
+      });
+  };
 
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
-    localStorage.getItem("user_role") && localStorage.getItem("user_role") === 'admin' ? setIsAdmin(true) : setIsAdmin(false);
-  },[]);
+    localStorage.getItem("user_role") &&
+    localStorage.getItem("user_role") === "admin"
+      ? setIsAdmin(true)
+      : setIsAdmin(false);
+  }, []);
 
   return (
-    <>
-      <NavbarComponent isAdmin={isAdmin} setIsAdmin={setIsAdmin} cartItemsNumber={cartItemsNumber}/>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
+      <NavbarComponent
+        isAdmin={isAdmin}
+        setIsAdmin={setIsAdmin}
+        cartItemsNumber={cartItemsNumber}
+      />
       <Breadcrumbs />
-      <PhoneList cartItemsNumber={cartItemsNumber} setCartItemsNumber={setCartItemsNumber} isAdmin={isAdmin} filterValues={filterValues} filters={filters} phones={phones} setFilters={setFilters} handleChange={handleChange} handleReset={handleReset} getPhones={getPhones}/>
-      { isAdmin &&
+      <PhoneList
+        cartItemsNumber={cartItemsNumber}
+        setCartItemsNumber={setCartItemsNumber}
+        isAdmin={isAdmin}
+        filterValues={filterValues}
+        filters={filters}
+        phones={phones}
+        setFilters={setFilters}
+        handleChange={handleChange}
+        handleReset={handleReset}
+        getPhones={getPhones}
+      />
+      {isAdmin && (
         <div className="d-flex justify-content-center mb-5 mt-5">
-        <Button variant="danger" onClick={() => setAddModalShow(true)}>
-          Add Phone
-        </Button>
+          <Button variant="danger" onClick={() => setAddModalShow(true)}>
+            Add Phone
+          </Button>
         </div>
-      } 
+      )}
       <AddPhoneModal
         show={addModalShow}
         onHide={() => setAddModalShow(false)}
         getPhones={getPhones}
       />
       <FooterComponent />
-    </>
+    </motion.div>
   );
 }
 

@@ -9,6 +9,7 @@ import CustomerAddress from "../components/cart/CustomerAddress";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import { BASE_URL } from "../Constants";
+import { motion } from "framer-motion";
 
 function CartPage() {
   const url = "http://localhost:3001/";
@@ -70,7 +71,10 @@ function CartPage() {
         : array[cartItemIndex].quantity - 1;
       setCartItems(array);
       //set new cart value
-      setTotalCartValue(totalCartValue - (array[cartItemIndex].quantity * array[cartItemIndex].price));
+      setTotalCartValue(
+        totalCartValue -
+          array[cartItemIndex].quantity * array[cartItemIndex].price
+      );
       //set local storage with new array
       let orders = array.map((item) => arrayToLocalStorage(item));
       localStorage.setItem("items", JSON.stringify(orders));
@@ -152,7 +156,7 @@ function CartPage() {
           setCartItemsNumber(0);
           setTimeout(() => {
             localStorage.removeItem("items");
-          })
+          });
         } else {
           setError(true);
           setErrorMessage("An error occured! Please try again.");
@@ -220,7 +224,11 @@ function CartPage() {
   //no items in cart and not logged in
   if (!orderList) {
     return (
-      <>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth }}
+      >
         <NavbarComponent cartItemsNumber={cartItemsNumber} />
         <Container className="mt-5 pt-5 text-center">
           <h4>Your cart is empty</h4>
@@ -230,7 +238,7 @@ function CartPage() {
         <div className="cart-footer">
           <FooterComponent />
         </div>
-      </>
+      </motion.div>
     );
   }
 
@@ -246,40 +254,51 @@ function CartPage() {
   //items in cart and not logged in
   if (orderList && !isLoggedIn) {
     return (
-      <>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth }}
+      >
         <NavbarComponent cartItemsNumber={cartItemsNumber} />
-        <Container className="mt-5 pt-5 text-center cart-container">{orderSummary}</Container>
+        <Container className="mt-5 pt-5 text-center cart-container">
+          {orderSummary}
+        </Container>
         <ToastContainer className="p-3 bottom-0 end-0">
-        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
-          {error ? (
-            <>
-              <Toast.Header>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto text-danger">Error!</strong>
-              </Toast.Header>
-              <Toast.Body>{errorMessage}</Toast.Body>
-            </>
-          ) : (
-            <>
-              <Toast.Header>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto text-success">Success!</strong>
-              </Toast.Header>
-              <Toast.Body>Your ordered!</Toast.Body>
-            </>
-          )}
-        </Toast>
-      </ToastContainer>
-      <FooterComponent />
-      </>
+          <Toast
+            onClose={() => setShow(false)}
+            show={show}
+            delay={3000}
+            autohide
+          >
+            {error ? (
+              <>
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto text-danger">Error!</strong>
+                </Toast.Header>
+                <Toast.Body>{errorMessage}</Toast.Body>
+              </>
+            ) : (
+              <>
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto text-success">Success!</strong>
+                </Toast.Header>
+                <Toast.Body>Your ordered!</Toast.Body>
+              </>
+            )}
+          </Toast>
+        </ToastContainer>
+        <FooterComponent />
+      </motion.div>
     );
   }
 
@@ -295,7 +314,11 @@ function CartPage() {
   );
 
   return (
-    <>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
       <ToastContainer className="p-3 bottom-0 end-0">
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
@@ -331,7 +354,7 @@ function CartPage() {
         {orderList && isLoggedIn && address}
       </Container>
       <FooterComponent />
-    </>
+    </motion.div>
   );
 }
 

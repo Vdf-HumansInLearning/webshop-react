@@ -5,6 +5,7 @@ import "../css/Orders.css";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -20,8 +21,8 @@ function OrdersPage() {
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("items"));
     let counter = 0;
-    if(cartItems) {
-      for(let i=0; i<cartItems.length; i++){
+    if (cartItems) {
+      for (let i = 0; i < cartItems.length; i++) {
         counter = counter + cartItems[i].quantity;
       }
       setCartItemsNumber(counter);
@@ -33,8 +34,12 @@ function OrdersPage() {
   }, []);
 
   return (
-    <>
-      <NavbarComponent cartItemsNumber={cartItemsNumber}/>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
+      <NavbarComponent cartItemsNumber={cartItemsNumber} />
       {loggedIn && orders.length > 0 ? (
         <main className="order-main">
           {orders.map((order) => (
@@ -63,8 +68,8 @@ function OrdersPage() {
           <Link to="/">Go back to Home page</Link>
         </div>
       )}
-        <FooterComponent />
-    </>
+      <FooterComponent />
+    </motion.div>
   );
 }
 

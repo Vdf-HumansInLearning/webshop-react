@@ -3,43 +3,53 @@ import { LinkContainer } from "react-router-bootstrap";
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import { useState, useEffect } from "react";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col'
-import '../css/HomePage.css';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import "../css/HomePage.css";
+import { motion } from "framer-motion";
 
 function HomePage() {
-    const [cartItemsNumber, setCartItemsNumber] = useState(0);
+  const [cartItemsNumber, setCartItemsNumber] = useState(0);
 
-    useEffect(() => {
-        const cartItems = JSON.parse(localStorage.getItem("items"));
-        let counter = 0;
-        if(cartItems) {
-          for(let i=0; i<cartItems.length; i++){
-            counter = counter + cartItems[i].quantity;
-          }
-          setCartItemsNumber(counter);
-        }
-    }, []);
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("items"));
+    let counter = 0;
+    if (cartItems) {
+      for (let i = 0; i < cartItems.length; i++) {
+        counter = counter + cartItems[i].quantity;
+      }
+      setCartItemsNumber(counter);
+    }
+  }, []);
 
-    return (
-        <>
-            <NavbarComponent cartItemsNumber={cartItemsNumber}/>
-            <main className="main-homepage pt-5">
-                <Row className="main-content d-flex justify-content-start align-items-center">
-                    <Col xs={1}>
-                    </Col>
-                    <Col md={4} sm={8} xs={11}>
-                        <h3 className="text-white">Discover our offers for mobile phones</h3>
-                        <LinkContainer to="/phones"><Button variant="outline-light" className="mt-2">See more</Button></LinkContainer>
-                    </Col>
-                    <Col xs={7}></Col>
-                </Row>
-                <div className="homepage-footer">
-                    <FooterComponent/>  
-                </div>
-            </main>
-        </>
-    );
+  return (
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
+      <NavbarComponent cartItemsNumber={cartItemsNumber} />
+      <main className="main-homepage pt-5">
+        <Row className="main-content d-flex justify-content-start align-items-center">
+          <Col xs={1}></Col>
+          <Col md={4} sm={8} xs={11}>
+            <h3 className="text-white">
+              Discover our offers for mobile phones
+            </h3>
+            <LinkContainer to="/phones">
+              <Button variant="outline-light" className="mt-2">
+                See more
+              </Button>
+            </LinkContainer>
+          </Col>
+          <Col xs={7}></Col>
+        </Row>
+        <div className="homepage-footer">
+          <FooterComponent />
+        </div>
+      </main>
+    </motion.div>
+  );
 }
 
 export default HomePage;

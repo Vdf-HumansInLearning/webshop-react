@@ -4,6 +4,7 @@ import EditProfileModal from "../components/EditProfileModal";
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import "../css/ProfilePage.css";
+import { motion } from "framer-motion";
 
 function ProfilePage() {
   const [modalShow, setModalShow] = useState(false);
@@ -41,7 +42,11 @@ function ProfilePage() {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ width: 0 }}
+      animate={{ width: "100%" }}
+      exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
+    >
       <NavbarComponent cartItemsNumber={cartItemsNumber} />
       <div
         className="container d-flex flex-column align-items-center mt-5 pt-5"
@@ -126,7 +131,7 @@ function ProfilePage() {
       <div className="profile-footer">
         <FooterComponent />
       </div>
-    </>
+    </motion.div>
   );
 }
 
