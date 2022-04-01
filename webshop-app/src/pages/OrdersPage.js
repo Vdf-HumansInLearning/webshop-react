@@ -48,6 +48,7 @@ function OrdersPage() {
               date={order.date}
               total={order.total}
               deliveryAddress={order.delivery_address}
+              billingAddress={order.billing_address}
             />
           ))}
         </main>
@@ -62,9 +63,7 @@ function OrdersPage() {
           <Link to="/">Go back to Home page</Link>
         </div>
       )}
-      <div className="order-footer">
         <FooterComponent />
-      </div>
     </>
   );
 }

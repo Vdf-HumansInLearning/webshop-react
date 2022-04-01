@@ -56,7 +56,7 @@ function CartPage() {
       ? array[cartItemIndex].quantity < 5
       : array[cartItemIndex].quantity > 1;
     let toastMessage = isIncrease
-      ? "You have exceeded the available quantity for this product."
+      ? "You have exceeded the maximum quantity available for this product."
       : "You can remove items by clicking on the trash icon.";
 
     if (condition) {
@@ -68,11 +68,9 @@ function CartPage() {
       array[cartItemIndex].quantity = isIncrease
         ? array[cartItemIndex].quantity + 1
         : array[cartItemIndex].quantity - 1;
-      array[cartItemIndex].value =
-        array[cartItemIndex].quantity * array[cartItemIndex].price;
       setCartItems(array);
       //set new cart value
-      setTotalCartValue(totalCartValue - array[cartItemIndex].value);
+      setTotalCartValue(totalCartValue - (array[cartItemIndex].quantity * array[cartItemIndex].price));
       //set local storage with new array
       let orders = array.map((item) => arrayToLocalStorage(item));
       localStorage.setItem("items", JSON.stringify(orders));
@@ -100,7 +98,8 @@ function CartPage() {
     }
   };
 
-  const arrayToLocalStorage = ({ name, price, quantity }) => ({
+  const arrayToLocalStorage = ({ id, name, price, quantity }) => ({
+    id,
     name,
     price,
     quantity,
@@ -179,7 +178,7 @@ function CartPage() {
   useEffect(() => {
     let sum = 0;
     cartItems.forEach((item) => {
-      sum += item.value;
+      sum += item.quantity * item.price;
     });
     setTotalCartValue(sum);
   }, [isLoggedIn, cartItems]);
@@ -204,7 +203,7 @@ function CartPage() {
       setCartItems(orders);
       let sum = 0;
       cartItems.forEach((item) => {
-        sum += item.value;
+        sum += item.quantity * item.price;
       });
       setTotalCartValue(sum);
     }
@@ -250,9 +249,36 @@ function CartPage() {
       <>
         <NavbarComponent cartItemsNumber={cartItemsNumber} />
         <Container className="mt-5 pt-5 text-center">{orderSummary}</Container>
-        <div className="cart-footer">
-          <FooterComponent />
-        </div>
+        <ToastContainer className="p-3" position="bottom-end">
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+          {error ? (
+            <>
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto text-danger">Error!</strong>
+              </Toast.Header>
+              <Toast.Body>{errorMessage}</Toast.Body>
+            </>
+          ) : (
+            <>
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto text-success">Success!</strong>
+              </Toast.Header>
+              <Toast.Body>Your ordered!</Toast.Body>
+            </>
+          )}
+        </Toast>
+      </ToastContainer>
+      <FooterComponent />
       </>
     );
   }
