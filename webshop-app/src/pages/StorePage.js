@@ -1,14 +1,15 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
-import AddPhoneModal from "../components/AddPhoneModal";
+import AddPhoneModal from "../components/phone/AddPhoneModal";
 import Breadcrumbs from "../components/Breadcrumbs";
-import PhoneList from "../components/PhoneList";
+import PhoneList from "../components/phone/PhoneList";
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 import "../css/StorePage.css";
 import { motion } from "framer-motion";
+import { BASE_URL } from "../Constants";
 
 function StorePage() {
   const [addModalShow, setAddModalShow] = useState(false);
@@ -78,7 +79,7 @@ function StorePage() {
 
   const getPhones = () => {
     axios
-      .get("http://localhost:3001/phones", { params: filters })
+      .get(`${BASE_URL}/phones`, { params: filters })
       .then(function (response) {
         setPhones(response.data.products);
         setFilterValues(response.data.filters);

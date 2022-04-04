@@ -12,6 +12,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useState } from "react";
 import "../css/Register.css";
 import { motion } from "framer-motion";
+import { BASE_URL } from "../Constants";
 
 function RegisterPage() {
   const [inputs, setInputs] = useState({
@@ -47,7 +48,7 @@ function RegisterPage() {
     setValidated(true);
     e.preventDefault();
     if (form.checkValidity()) {
-      fetch("http://localhost:3001/auth/register", {
+      fetch(`${BASE_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +93,7 @@ function RegisterPage() {
       animate={{ width: "100%" }}
       exit={{ x: window.innerWidth, transition: {duration: 0.1} }}
       >
-      <Container className="container d-flex justify-content-center flex-column align-items-center my-5 pt-5">
+      <Container className="container register-main d-flex justify-content-center flex-column align-items-center my-5 pt-5">
         {loggedIn ? (
           <>
             <h3 className="main-title">You are already registered.</h3>
@@ -182,7 +183,7 @@ function RegisterPage() {
                     name="email"
                     value={inputs.email}
                     onChange={handleChange}
-                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}"
                     required
                   />
                   <Form.Control.Feedback type="invalid">

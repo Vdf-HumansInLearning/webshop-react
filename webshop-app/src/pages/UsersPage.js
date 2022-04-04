@@ -1,7 +1,7 @@
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import { useState, useEffect } from "react";
-import UserList from "../components/UserList";
+import UserList from "../components/user/UserList";
 import Breadcrumbs from "../components/Breadcrumbs";
 import NotFoundPage from "./NotFoundPage";
 import { motion } from "framer-motion";

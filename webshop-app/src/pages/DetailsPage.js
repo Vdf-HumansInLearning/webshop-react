@@ -11,6 +11,7 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 
 import "../css/PhoneDetails.css";
 import { motion } from "framer-motion";
+import { BASE_URL } from "../Constants";
 
 function DetailsPage() {
   const [phone, setPhone] = useState(null);
@@ -23,7 +24,7 @@ function DetailsPage() {
       window.location.pathname.lastIndexOf("/") + 1
     );
     axios
-      .get("http://localhost:3001/phones/" + afterLastSlash)
+      .get(`${BASE_URL}/phones/${afterLastSlash}`)
       .then(function (response) {
         setPhone(response.data);
       });

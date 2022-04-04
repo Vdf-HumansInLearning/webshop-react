@@ -2,6 +2,7 @@ import { Form, Modal, Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import "../css/Modal.css";
+import { BASE_URL } from "../Constants";
 
 function EditProfileModal(props) {
   const [validated, setValidated] = useState(false);
@@ -32,7 +33,7 @@ function EditProfileModal(props) {
     const form = event.currentTarget;
     event.preventDefault();
     if (form.checkValidity()) {
-      fetch("http://localhost:3001/users/" + props.id, {
+      fetch(`${BASE_URL}/users/${props.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +105,7 @@ function EditProfileModal(props) {
                   onChange={handleChangeEditProfile}
                   placeholder="ex. : Kulas Light"
                   aria-label="ex. : Kulas Light"
-                  pattern="(^[A-Za-z]{2,30})([ ]{0,1})([A-Za-z]{2,30})"
+                  pattern="(^[A-Za-z]{2,30})([ ]{0,1})([A-Za-z]{2,30}[ ]{0,1}){0,3}"
                   required
                 />
                 <Form.Control.Feedback type="invalid">

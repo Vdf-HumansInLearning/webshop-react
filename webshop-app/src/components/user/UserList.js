@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
-import '../css/Users.css'
+import '../../css/Users.css'
 import User from './User'
 
 function UserList() {

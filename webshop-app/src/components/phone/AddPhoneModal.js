@@ -3,50 +3,49 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import "../css/Modal.css";
+import "../../css/Modal.css";
+import { BASE_URL } from "../../Constants";
 
-function EditPhoneModal({ getPhones, onHide, ...props }) {
-  const [phoneToEdit, setPhoneToEdit] = useState({
-    name: props.name,
-    brand: props.brand,
-    operating_system: props.os,
-    price: props.price,
-    discount: props.discount,
-    quantity: props.quantity,
-    availability_date: props.date,
-    rating: props.rating,
-    image: props.image,
+function AddPhoneModal({getPhones, ...props}) {
+  const [phoneToAdd, setPhoneToAdd] = useState({
+    name: "",
+    brand: "",
+    operating_system: "",
+    price: "",
+    discount: "",
+    quantity: "",
+    availability_date: "",
+    rating: "",
+    image: "toppng.com-samsung-phone-833x870.png",
   });
   const [validated, setValidated] = useState(false);
 
-  const handleChangeEditPhone = (e) => {
+  const handleChangeAddPhone = (e) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    setPhoneToEdit({ ...phoneToEdit, [name]: value });
+    setPhoneToAdd({ ...phoneToAdd, [name]: value });
   };
 
-  const editPhone = (e) => {
+  const addPhone = (e) => {
     const form = e.currentTarget;
     e.preventDefault();
     if (form.checkValidity()) {
-      fetch("http://localhost:3001/phones/" + props.id, {
-        method: "PUT",
+      fetch(`${BASE_URL}/phones`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(phoneToEdit),
+        body: JSON.stringify(phoneToAdd),
       }).then((data) => {
         if (data.status === 200) {
-          console.log("phone edited");
           getPhones();
-          onHide();
+          props.onHide();
         } else {
           console.log("error");
         }
       });
     }
-
     setValidated(true);
   };
 
@@ -56,20 +55,18 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      onHide={onHide}
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Edit Phone</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">Add Phone</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div
-          id="edit-phone-container"
-          className="edit-phone d-flex justify-content-center flex-column align-items-center text-left"
+          id="new-phone-container"
+          className="new-phone hide d-flex justify-content-center flex-column align-items-center text-left"
         >
           <Form
-            onSubmit={(e) => editPhone(e)}
-            className="edit-phone-form"
-            id="edit-phone-form"
+            onSubmit={(e) => addPhone(e)}
+            className="new-phone-form"
             noValidate
             validated={validated}
           >
@@ -86,7 +83,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   type="text"
                   name="brand"
                   defaultValue={props.brand}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   placeholder="ex. : Samsung"
                   aria-label="ex. : Samsung"
                   pattern="^[a-zA-Z]{1,30}$"
@@ -110,7 +107,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   name="name"
                   type="text"
                   defaultValue={props.name}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   placeholder="ex. : Galaxy S21"
                   aria-label="ex. : Galaxy S21"
                   aria-describedby="basic-addon1"
@@ -135,7 +132,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   name="operating_system"
                   type="text"
                   defaultValue={props.os}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   placeholder="ex. : Android, iOS"
                   aria-label="ex. : Android, iOS"
                   aria-describedby="basic-addon1"
@@ -160,7 +157,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   name="price"
                   type="text"
                   defaultValue={props.price}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   placeholder="ex. : 899"
                   aria-label="ex. : 899"
                   aria-describedby="basic-addon1"
@@ -185,7 +182,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   name="discount"
                   type="text"
                   defaultValue={props.discount}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   placeholder="ex. : 250"
                   aria-label="ex. : 250"
                   pattern="^\d+$"
@@ -209,7 +206,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   name="quantity"
                   type="text"
                   defaultValue={props.quantity}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   placeholder="ex. : 100"
                   aria-label="ex. : 100"
                   aria-describedby="basic-addon1"
@@ -233,7 +230,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                 <Form.Control
                   type="text"
                   defaultValue={props.date}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   name="availability_date"
                   placeholder="ex. : 2021-08-13"
                   aria-label="ex. : 2021-08-13"
@@ -259,7 +256,7 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
                   name="rating"
                   type="text"
                   defaultValue={props.rating}
-                  onChange={handleChangeEditPhone}
+                  onChange={handleChangeAddPhone}
                   className="form-control"
                   placeholder="ex. : 4.5"
                   aria-label="ex. : 4.5"
@@ -275,14 +272,14 @@ function EditPhoneModal({ getPhones, onHide, ...props }) {
       </Modal.Body>
       <Modal.Footer>
         <div className="add-new-buttons d-flex justify-content-between">
-          <Button variant="danger" onClick={editPhone}>
-            Save changes
+          <Button variant="danger" onClick={addPhone}>
+            Add
           </Button>
-          <Button onClick={onHide}>Cancel</Button>
+          <Button onClick={props.onHide}>Cancel</Button>
         </div>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default EditPhoneModal;
+export default AddPhoneModal;

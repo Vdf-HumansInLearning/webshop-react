@@ -12,7 +12,6 @@ import { BASE_URL } from "../Constants";
 import { motion } from "framer-motion";
 
 function CartPage() {
-  const url = "http://localhost:3001/";
 
   const orderList = JSON.parse(localStorage.getItem("items"));
   const userId = localStorage.getItem("user_id");
@@ -142,7 +141,7 @@ function CartPage() {
     };
 
     if (form.checkValidity()) {
-      fetch(url + "orders", {
+      fetch(`${BASE_URL}/orders`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -167,7 +166,7 @@ function CartPage() {
   };
 
   const getUser = (id) => {
-    fetch(BASE_URL + "users/" + id)
+    fetch(`${BASE_URL}/users/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setCurrentUser(data);

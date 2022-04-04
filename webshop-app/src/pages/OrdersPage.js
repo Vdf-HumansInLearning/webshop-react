@@ -41,8 +41,9 @@ function OrdersPage() {
         animate={{ width: "100%" }}
         exit={{ x: window.innerWidth, transition: { duration: 0.1 } }}
       >
+        <div className="order-main">
         {loggedIn && orders.length > 0 ? (
-          <main className="order-main">
+          <>
             {orders.map((order) => (
               <Order
                 key={order.id}
@@ -57,7 +58,7 @@ function OrdersPage() {
                 billingAddress={order.billing_address}
               />
             ))}
-          </main>
+          </>
         ) : loggedIn && orders.length === 0 ? (
           <div className="text-center mt-5">
             <h3>You don't have any orders yet</h3>
@@ -69,6 +70,7 @@ function OrdersPage() {
             <Link to="/">Go back to Home page</Link>
           </div>
         )}
+        </div>
         <FooterComponent />
       </motion.div>
     </>

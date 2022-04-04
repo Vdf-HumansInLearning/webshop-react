@@ -1,5 +1,5 @@
 import Phone from "./Phone";
-import Filters from "./Filters";
+import Filters from "../Filters";
 
 function PhoneList({handleChange, handleReset, filterValues, filters, phones, setFilters, getPhones, isAdmin, cartItemsNumber, setCartItemsNumber}) {
 

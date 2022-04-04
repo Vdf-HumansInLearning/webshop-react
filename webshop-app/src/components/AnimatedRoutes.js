@@ -1,16 +1,16 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import CartPage from "./pages/CartPage";
-import UsersPage from "./pages/UsersPage";
-import StorePage from "./pages/StorePage";
-import DetailsPage from "./pages/DetailsPage";
-import ProfilePage from "./pages/ProfilePage";
-import OrdersPage from "./pages/OrdersPage";
-import ProtectedRoutes from "./pages/ProtectedRoutes";
+import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import NotFoundPage from "../pages/NotFoundPage";
+import CartPage from "../pages/CartPage";
+import UsersPage from "../pages/UsersPage";
+import StorePage from "../pages/StorePage";
+import DetailsPage from "../pages/DetailsPage";
+import ProfilePage from "../pages/ProfilePage";
+import OrdersPage from "../pages/OrdersPage";
+import ProtectedRoutes from "../pages/ProtectedRoutes";
 
 import { AnimatePresence } from "framer-motion";
 

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import "../css/ProfilePage.css";
 import { motion } from "framer-motion";
+import { BASE_URL } from "../Constants";
 
 function ProfilePage() {
   const [modalShow, setModalShow] = useState(false);
@@ -34,7 +35,7 @@ function ProfilePage() {
   }, []);
 
   const getProfile = () => {
-    fetch("http://localhost:3001/users/" + user_id)
+    fetch(`${BASE_URL}/users/${user_id}`)
       .then((response) => response.json())
       .then((data) => {
         setUser(data);

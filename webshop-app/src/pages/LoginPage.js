@@ -13,6 +13,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useState } from "react";
 import "../css/LoginPage.css";
 import { motion } from "framer-motion";
+import { BASE_URL } from "../Constants";
 
 function LoginPage() {
   const [inputs, setInputs] = useState({ email: "", password: "" });
@@ -40,7 +41,7 @@ function LoginPage() {
     setValidated(true);
     e.preventDefault();
     if (form.checkValidity()) {
-      fetch("http://localhost:3001/auth/login", {
+      fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +114,7 @@ function LoginPage() {
                     placeholder="Email"
                     aria-label="Email"
                     aria-describedby="basic-addon1"
-                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}"
                     required
                   />
                   <Form.Control.Feedback type="invalid">

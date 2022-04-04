@@ -6,6 +6,7 @@ import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import { LinkContainer } from "react-router-bootstrap";
 import { useState } from "react";
+import { BASE_URL } from "../../Constants";
 
 function Phone({
   id,
@@ -29,7 +30,7 @@ function Phone({
 
 
   const deletePhone = () => {
-    fetch("http://localhost:3001/phones/" + id, {
+    fetch(`${BASE_URL}/phones/${id}`, {
       method: "DELETE",
     }).then((data) => {
       if (data.status === 200) {
