@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import "../../css/Modal.css";
 import { BASE_URL } from "../../Constants";
 
-function AddPhoneModal({getPhones, ...props}) {
+function AddPhoneModal({ getPhones, ...props }) {
   const [phoneToAdd, setPhoneToAdd] = useState({
     name: "",
     brand: "",
@@ -16,7 +16,7 @@ function AddPhoneModal({getPhones, ...props}) {
     quantity: "",
     availability_date: "",
     rating: "",
-    image: "toppng.com-samsung-phone-833x870.png",
+    image: "",
   });
   const [validated, setValidated] = useState(false);
 
@@ -24,7 +24,37 @@ function AddPhoneModal({getPhones, ...props}) {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    setPhoneToAdd({ ...phoneToAdd, [name]: value });
+    if (name === "brand") {
+      setPhoneToAdd({ ...phoneToAdd, image: setImage(value), [name]: value });
+    } else setPhoneToAdd({ ...phoneToAdd, [name]: value });
+  };
+
+  const setImage = (brand) => {
+    let img_path = "";
+    switch (brand) {
+      case "Samsung":
+        img_path += "toppng.com-samsung-phone-833x870.png";
+        break;
+      case "Apple":
+        img_path += "toppng.com-iphone-550x620.png";
+        break;
+      case "Motorola":
+        img_path +=
+          "toppng.com-motorola-moto-x-gen-2-tempered-glass-by-cellhelmet-motorola-moto-x2-310x585.png";
+        break;
+      case "Google":
+        img_path += "toppng.com-google-pixel-1-white-600x600.png";
+        break;
+      case "Xiaomi":
+        img_path += "toppng.com-xiaomi-smartphone-710x710.png";
+        break;
+      case "Huawei":
+        img_path += "toppng.com-huawei-p8-1200x900.png";
+        break;
+      default:
+        img_path += "toppng.com-samsung-phone-833x870.png";
+    }
+    return img_path;
   };
 
   const addPhone = (e) => {
